@@ -1,0 +1,26 @@
+export const Colors = {
+  primary: '#2E7D32',
+  primaryDark: '#1B5E20',
+  primaryLight: '#4CAF50',
+  secondary: '#8D6E63',
+  accent: '#FF9800',
+  background: '#F5F5F0',
+  surface: '#FFFFFF',
+  card: '#FFFFFF',
+  text: '#1A1A1A',
+  textSecondary: '#666666',
+  textLight: '#999999',
+  border: '#E0E0E0',
+  success: '#4CAF50',
+  warning: '#FFC107',
+  error: '#F44336',
+  paid: '#4CAF50',
+  pending: '#FF9800',
+  upi: '#5C4AC7',
+  cash: '#2E7D32',
+  white: '#FFFFFF',
+  black: '#000000',
+  overlay: 'rgba(0,0,0,0.5)',
+};
+
+export default Colors;
