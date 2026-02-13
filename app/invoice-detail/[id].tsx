@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,12 @@ import {
   ScrollView,
   TouchableOpacity,
   Share,
-  Platform,
 } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import {
   FileText,
-  User,
   Calendar,
-  IndianRupee,
   Share2,
-  Printer,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
@@ -23,7 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function InvoiceDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
+  useRouter();
   const { invoices } = useAppData();
   const { user } = useAuth();
 

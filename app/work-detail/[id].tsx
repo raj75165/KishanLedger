@@ -28,7 +28,7 @@ import * as Haptics from 'expo-haptics';
 export default function WorkDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
-  const { workEntries, updateWorkEntry, deleteWorkEntry, addPayment } = useAppData();
+  const { workEntries, deleteWorkEntry, addPayment } = useAppData();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'upi'>('cash');
   const [upiId, setUpiId] = useState('');

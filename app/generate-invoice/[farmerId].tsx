@@ -12,8 +12,6 @@ import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import {
   Calendar,
   FileText,
-  Check,
-  IndianRupee,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
