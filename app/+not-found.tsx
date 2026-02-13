@@ -12,7 +12,7 @@ export default function NotFoundScreen() {
         <Text style={styles.title}>Page not found</Text>
         <Text style={styles.subtitle}>The page you&apos;re looking for doesn&apos;t exist.</Text>
 
-        <Link href="/(tabs)" style={styles.link}>
+        <Link href="/" style={styles.link}>
           <Text style={styles.linkText}>Go to Home</Text>
         </Link>
       </View>
