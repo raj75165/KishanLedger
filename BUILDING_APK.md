@@ -11,7 +11,8 @@ Before you can build APKs automatically, you need to:
 1. Create an account at [expo.dev](https://expo.dev) if you don't have one
 2. Create a new project or link this existing project to your Expo account
 3. Generate an access token:
-   - Go to [Expo Access Tokens](https://expo.dev/accounts/[account]/settings/access-tokens)
+   - Go to [Expo Access Tokens](https://expo.dev/settings/access-tokens)
+   - Alternatively, navigate to your account Settings > Access Tokens
    - Click "Create Token"
    - Give it a descriptive name (e.g., "GitHub Actions")
    - Copy the token
@@ -33,7 +34,7 @@ Once configured, you have several ways to build APKs:
 
 #### A. Automatic Build on Release
 
-1. Go to the [Releases page](https://github.com/raj75165/KishanLedger/releases)
+1. Go to your repository's Releases page (click "Releases" on the right sidebar)
 2. Click "Draft a new release"
 3. Create a tag (e.g., `v1.0.0`)
 4. Fill in release details
@@ -42,7 +43,7 @@ Once configured, you have several ways to build APKs:
 
 #### B. Manual Build via GitHub Actions
 
-1. Go to the [Actions tab](https://github.com/raj75165/KishanLedger/actions)
+1. Go to your repository's Actions tab
 2. Select "Build Android APK" workflow
 3. Click "Run workflow"
 4. Select the branch
@@ -77,7 +78,7 @@ The `eas.json` file defines three build profiles:
 
 Users can download APKs directly from your GitHub releases:
 
-1. Visit the [Releases page](https://github.com/raj75165/KishanLedger/releases)
+1. Visit your repository's Releases page
 2. Find the desired version
 3. Download the `.apk` file
 4. Install on Android device

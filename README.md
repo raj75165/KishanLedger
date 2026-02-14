@@ -37,7 +37,7 @@ This repository is configured with GitHub Actions to automatically build APKs:
 1. **Automatic builds**: APKs are automatically built when you create a new release
 2. **Manual builds**: Go to the [Actions tab](../../actions), select "Build Android APK" workflow, and click "Run workflow"
 
-**Note**: You need to configure the `EXPO_TOKEN` secret in your repository settings for automatic builds to work. Get your token from [Expo Access Tokens](https://expo.dev/accounts/[account]/settings/access-tokens).
+**Note**: You need to configure the `EXPO_TOKEN` secret in your repository settings for automatic builds to work. Get your token from [Expo Access Tokens](https://expo.dev/settings/access-tokens) (navigate to Settings > Access Tokens in your Expo account).
 
 📖 **For detailed setup and troubleshooting, see [BUILDING_APK.md](./BUILDING_APK.md)**
 
