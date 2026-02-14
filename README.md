@@ -1,6 +1,8 @@
 # Welcome to your Rork app
 
-## Download Android APK
+## 📱 Download Android APK
+
+> **Quick Guide**: See [DOWNLOAD_APK.md](./DOWNLOAD_APK.md) for simple download instructions.
 
 You can download the Android APK file directly from GitHub:
 
@@ -36,6 +38,8 @@ This repository is configured with GitHub Actions to automatically build APKs:
 2. **Manual builds**: Go to the [Actions tab](../../actions), select "Build Android APK" workflow, and click "Run workflow"
 
 **Note**: You need to configure the `EXPO_TOKEN` secret in your repository settings for automatic builds to work. Get your token from [Expo Access Tokens](https://expo.dev/accounts/[account]/settings/access-tokens).
+
+📖 **For detailed setup and troubleshooting, see [BUILDING_APK.md](./BUILDING_APK.md)**
 
 ## Project info
 
