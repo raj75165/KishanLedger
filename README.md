@@ -1,5 +1,46 @@
 # Welcome to your Rork app
 
+## 📱 Download Android APK
+
+> **Quick Guide**: See [DOWNLOAD_APK.md](./DOWNLOAD_APK.md) for simple download instructions.
+
+You can download the Android APK file directly from GitHub:
+
+### Option 1: Download from Releases (Recommended)
+
+1. Go to the [Releases page](../../releases) of this repository
+2. Find the latest release
+3. Download the `.apk` file from the release assets
+4. Install the APK on your Android device
+
+### Option 2: Build Manually
+
+If you want to build the APK yourself:
+
+```bash
+# Install EAS CLI
+bun install -g @expo/eas-cli
+
+# Login to your Expo account
+eas login
+
+# Build Android APK
+eas build --platform android --profile preview
+```
+
+After the build completes, you can download the APK from your [Expo dashboard](https://expo.dev/).
+
+### Option 3: Trigger GitHub Actions Build
+
+This repository is configured with GitHub Actions to automatically build APKs:
+
+1. **Automatic builds**: APKs are automatically built when you create a new release
+2. **Manual builds**: Go to the [Actions tab](../../actions), select "Build Android APK" workflow, and click "Run workflow"
+
+**Note**: You need to configure the `EXPO_TOKEN` secret in your repository settings for automatic builds to work. Get your token from [Expo Access Tokens](https://expo.dev/settings/access-tokens) (navigate to Settings > Access Tokens in your Expo account).
+
+📖 **For detailed setup and troubleshooting, see [BUILDING_APK.md](./BUILDING_APK.md)**
+
 ## Project info
 
 This is a native cross-platform mobile app created with [Rork](https://rork.com)
