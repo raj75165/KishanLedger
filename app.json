@@ -18,6 +18,7 @@
       "bundleIdentifier": "app.rork.farmer-implements-app-pweswo4"
     },
     "android": {
+      "allowBackup": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"

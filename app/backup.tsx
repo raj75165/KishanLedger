@@ -261,20 +261,39 @@ export default function BackupScreen() {
       />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
 
-        {/* Info: switching phones */}
+        {/* Info: Play Store, Auto Backup, and phone switching */}
         <View style={styles.infoCard}>
           <Info size={22} color={Colors.accent} />
-          <Text style={styles.infoCardTitle}>Switching to a New Phone?</Text>
-          <Text style={styles.infoCardText}>
-            Your data is stored locally on this device. If you lose your phone or buy a new one:
-          </Text>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>❌</Text>
-            <Text style={styles.infoRowText}>Without Google Drive Backup — all data will be lost</Text>
+          <Text style={styles.infoCardTitle}>How is My Data Saved?</Text>
+
+          <View style={styles.tierRow}>
+            <Text style={styles.tierBadge}>1</Text>
+            <View style={styles.tierContent}>
+              <Text style={styles.tierTitle}>✅ App — Play Store + Google Account</Text>
+              <Text style={styles.tierText}>
+                When you install this app from the Play Store with your Google account, the app is linked to your account. On any new phone with the same Google account the app will be automatically reinstalled from the Play Store.
+              </Text>
+            </View>
           </View>
-          <View style={styles.infoRow}>
-            <Text style={styles.infoIcon}>✅</Text>
-            <Text style={styles.infoRowText}>With Google Drive Backup — sign in with the same Google account on the new phone and restore instantly</Text>
+
+          <View style={styles.tierRow}>
+            <Text style={styles.tierBadge}>2</Text>
+            <View style={styles.tierContent}>
+              <Text style={styles.tierTitle}>⚠️ Data — Android Auto Backup (Automatic)</Text>
+              <Text style={styles.tierText}>
+                Android automatically backs up app data to your Google account up to once per day (when the phone is idle, charging, and on Wi-Fi). On a new phone, data is restored when you sign in — but this has a 25 MB limit and may not reflect today's data.
+              </Text>
+            </View>
+          </View>
+
+          <View style={styles.tierRow}>
+            <Text style={styles.tierBadge}>3</Text>
+            <View style={styles.tierContent}>
+              <Text style={styles.tierTitle}>✅ Data — Google Drive Backup (Recommended)</Text>
+              <Text style={styles.tierText}>
+                Use the "Backup to Google Drive" button below whenever you want. Your latest data is always available and can be restored instantly on any phone — no waiting, no limits.
+              </Text>
+            </View>
           </View>
         </View>
 
@@ -457,6 +476,38 @@ const styles = StyleSheet.create({
   },
   infoRowText: {
     flex: 1,
+    fontSize: 13,
+    color: Colors.textSecondary,
+    lineHeight: 18,
+  },
+  tierRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 10,
+    gap: 10,
+  },
+  tierBadge: {
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: Colors.accent,
+    color: Colors.white,
+    fontSize: 12,
+    fontWeight: '700' as const,
+    textAlign: 'center',
+    lineHeight: 22,
+    overflow: 'hidden',
+  },
+  tierContent: {
+    flex: 1,
+  },
+  tierTitle: {
+    fontSize: 13,
+    fontWeight: '600' as const,
+    color: Colors.text,
+    marginBottom: 3,
+  },
+  tierText: {
     fontSize: 13,
     color: Colors.textSecondary,
     lineHeight: 18,
