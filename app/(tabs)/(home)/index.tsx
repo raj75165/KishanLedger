@@ -18,6 +18,7 @@ import {
   FileText,
   TrendingUp,
   ChevronRight,
+  QrCode,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
@@ -64,6 +65,12 @@ export default function DashboardScreen() {
           <Text style={styles.profileInitial}>
             {user?.name?.charAt(0).toUpperCase() || 'U'}
           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.qrButton}
+          onPress={() => router.push('/qr-code' as any)}
+        >
+          <QrCode size={22} color={Colors.white} />
         </TouchableOpacity>
       </View>
 
@@ -263,6 +270,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '600' as const,
     color: Colors.white,
+  },
+  qrButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
   },
   scrollView: {
     flex: 1,
