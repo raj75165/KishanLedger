@@ -19,6 +19,10 @@ android/
 *.key
 *.mobileprovision
 
+# Android signing credentials — copy credentials.json.example to credentials.json
+# and fill in real values; credentials.json is intentionally gitignored
+credentials.json
+
 # Metro
 .metro-health-check*
 

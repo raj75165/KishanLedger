@@ -305,6 +305,48 @@ For mobile apps, you'll configure your app's deep linking scheme in `app.json`.
 2. Delete `node_modules` and reinstall: `rm -rf node_modules && bun install`
 3. Check [Expo's troubleshooting guide](https://docs.expo.dev/troubleshooting/build-errors/)
 
+### **`credentials.json` not found / Android signing error?**
+
+The `credentials.json.example` file at the root of this project is a **template** for local Android signing.
+Before running `eas build --platform android`, copy it to `credentials.json` and fill in the real values:
+
+1. **Generate a keystore** (skip if you already have one):
+
+   ```bash
+   keytool -genkey -v -keystore android/app/release.keystore \
+     -alias your-key-alias -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+2. **Copy the template and fill in real values**:
+
+   ```bash
+   cp credentials.json.example credentials.json
+   ```
+
+   Then edit `credentials.json` and replace the placeholder values:
+
+   ```json
+   {
+     "android": {
+       "keystore": {
+         "keystorePath": "android/app/release.keystore",
+         "keystorePassword": "your-actual-keystore-password",
+         "keyAlias": "your-actual-key-alias",
+         "keyPassword": "your-actual-key-password"
+       }
+     }
+   }
+   ```
+
+   > ⚠️ **`credentials.json` is listed in `.gitignore` and will never be committed.** Keep it private and do not share it. Only `credentials.json.example` (the template with placeholders) is tracked in git.
+
+3. **Run the EAS build**:
+
+   ```bash
+   eas build --platform android --profile preview   # APK
+   eas build --platform android --profile production  # AAB
+   ```
+
 ### **Need help with native features?**
 
 - Check [Expo's documentation](https://docs.expo.dev/) for native APIs
