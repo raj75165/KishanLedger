@@ -18,6 +18,7 @@ import {
   FileText,
   TrendingUp,
   ChevronRight,
+  Wrench,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
@@ -154,12 +155,12 @@ export default function DashboardScreen() {
 
             <TouchableOpacity
               style={styles.actionButton}
-              onPress={() => router.push('/(tabs)/reports' as any)}
+              onPress={() => router.push('/manage-implements' as any)}
             >
-              <View style={[styles.actionIcon, { backgroundColor: Colors.upi }]}>
-                <TrendingUp size={22} color={Colors.white} />
+              <View style={[styles.actionIcon, { backgroundColor: '#6c757d' }]}>
+                <Wrench size={22} color={Colors.white} />
               </View>
-              <Text style={styles.actionText}>Reports</Text>
+              <Text style={styles.actionText}>Implements</Text>
             </TouchableOpacity>
           </View>
         </View>
