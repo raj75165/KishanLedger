@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { User } from '@/types';
 
 const AUTH_STORAGE_KEY = '@farm_app_auth';
+const MAGIC_OTP = '123456'; // For demo purposes
 
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const queryClient = useQueryClient();
@@ -52,14 +53,16 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   });
 
   const sendOtp = (phone: string) => {
-    console.log('OTP sent to:', phone);
+    // In a real app, you would integrate with an SMS service like Firebase here.
+    console.log(`Sending OTP to ${phone}. For demo, use: ${MAGIC_OTP}`);
     setPendingPhone(phone);
     setOtpSent(true);
     return true;
   };
 
   const verifyOtp = (otp: string): boolean => {
-    if (otp === '123456' || otp.length === 6) {
+    // In a real app, you would send the OTP to your backend for verification.
+    if (otp === MAGIC_OTP) {
       return true;
     }
     return false;
