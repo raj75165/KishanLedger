@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
-import { User, LogOut, Save, Settings } from 'lucide-react-native';
+import { User, LogOut, Save, Settings, ChevronRight, DatabaseBackup } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Haptics from 'expo-haptics';
@@ -138,6 +138,15 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         )}
 
+        <View style={styles.dataSection}>
+            <Text style={styles.sectionTitle}>Data Management</Text>
+            <TouchableOpacity style={styles.dataButton} onPress={() => router.push('/backup-restore')}>
+                <DatabaseBackup size={22} color={Colors.primary} />
+                <Text style={styles.dataButtonText}>Backup & Restore</Text>
+                <ChevronRight size={22} color={Colors.textLight} />
+            </TouchableOpacity>
+        </View>
+
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <LogOut size={20} color={Colors.error} />
           <Text style={styles.logoutText}>Logout</Text>
@@ -244,6 +253,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600' as const,
     color: Colors.white,
+  },
+  dataSection: {
+      marginTop: 24,
+  },
+  sectionTitle: {
+      fontSize: 16,
+      fontWeight: '600',
+      color: Colors.text,
+      marginBottom: 12,
+      paddingHorizontal: 4
+  },
+  dataButton: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: Colors.card,
+      borderRadius: 12,
+      padding: 16,
+      gap: 16,
+  },
+  dataButtonText: {
+      flex: 1,
+      fontSize: 16,
+      fontWeight: '500',
+      color: Colors.text
   },
   logoutButton: {
     flexDirection: 'row',
