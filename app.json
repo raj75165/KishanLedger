@@ -26,6 +26,7 @@
       "package": "app.rork.farmer_implements_app_pweswo4"
     },
     "web": {
+      "bundler": "metro",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
