@@ -236,7 +236,6 @@ export default function AddWorkScreen() {
       <Modal
         visible={showFarmerModal}
         animationType="slide"
-        presentationStyle="pageSheet"
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>
@@ -297,7 +296,6 @@ export default function AddWorkScreen() {
       <Modal
         visible={showImplementModal}
         animationType="slide"
-        presentationStyle="pageSheet"
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalHeader}>

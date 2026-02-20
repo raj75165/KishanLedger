@@ -41,14 +41,12 @@ function RootLayoutNav() {
         name="add-farmer" 
         options={{ 
           presentation: 'modal',
-          headerShown: false,
         }} 
       />
       <Stack.Screen 
         name="add-work" 
         options={{ 
           presentation: 'modal',
-          headerShown: false,
         }} 
       />
       <Stack.Screen 
