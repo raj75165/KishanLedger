@@ -81,6 +81,12 @@ function RootLayoutNav() {
           headerShown: false,
         }} 
       />
+      <Stack.Screen 
+        name="backup" 
+        options={{ 
+          headerShown: false,
+        }} 
+      />
     </Stack>
   );
 }

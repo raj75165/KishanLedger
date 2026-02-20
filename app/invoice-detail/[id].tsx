@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Share,
 } from 'react-native';
-import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
+import { useLocalSearchParams, Stack } from 'expo-router';
 import {
   FileText,
   Calendar,
@@ -19,7 +19,6 @@ import { useAuth } from '@/contexts/AuthContext';
 
 export default function InvoiceDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  useRouter();
   const { invoices } = useAppData();
   const { user } = useAuth();
 
