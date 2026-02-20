@@ -2,12 +2,14 @@ import createContextHook from '@nkzw/create-context-hook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useMemo } from 'react';
-import { Farmer, WorkEntry, Payment, Invoice } from '@/types';
+import { Farmer, WorkEntry, Payment, Invoice, Implement } from '@/types';
+import { IMPLEMENTS as DEFAULT_IMPLEMENTS } from '@/constants/implements';
 
 const FARMERS_KEY = '@farm_app_farmers';
 const WORK_ENTRIES_KEY = '@farm_app_work_entries';
 const PAYMENTS_KEY = '@farm_app_payments';
 const INVOICES_KEY = '@farm_app_invoices';
+const IMPLEMENTS_KEY = '@farm_app_implements';
 
 function generateId(): string {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -27,6 +29,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
   const [workEntries, setWorkEntries] = useState<WorkEntry[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
+  const [implements, setImplements] = useState<Implement[]>([]);
 
   const farmersQuery = useQuery({
     queryKey: ['farmers'],
@@ -60,6 +63,20 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     },
   });
 
+  const implementsQuery = useQuery({
+    queryKey: ['implements'],
+    queryFn: async () => {
+      const stored = await AsyncStorage.getItem(IMPLEMENTS_KEY);
+      if (stored) {
+        return JSON.parse(stored);
+      } else {
+        // Seed the default data on first launch
+        await AsyncStorage.setItem(IMPLEMENTS_KEY, JSON.stringify(DEFAULT_IMPLEMENTS));
+        return DEFAULT_IMPLEMENTS;
+      }
+    },
+  });
+
   useEffect(() => {
     if (farmersQuery.data) setFarmers(farmersQuery.data);
   }, [farmersQuery.data]);
@@ -75,6 +92,10 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
   useEffect(() => {
     if (invoicesQuery.data) setInvoices(invoicesQuery.data);
   }, [invoicesQuery.data]);
+
+  useEffect(() => {
+    if (implementsQuery.data) setImplements(implementsQuery.data);
+  }, [implementsQuery.data]);
 
   const saveFarmersMutation = useMutation({
     mutationFn: async (data: Farmer[]) => {
@@ -113,6 +134,16 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['invoices'] });
+    },
+  });
+
+  const saveImplementsMutation = useMutation({
+    mutationFn: async (data: Implement[]) => {
+      await AsyncStorage.setItem(IMPLEMENTS_KEY, JSON.stringify(data));
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['implements'] });
     },
   });
 
@@ -226,6 +257,30 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     return invoice;
   };
 
+    const addImplement = (implement: Omit<Implement, 'id'>) => {
+    const newImplement: Implement = {
+      ...implement,
+      id: generateId(),
+    };
+    const updated = [...implements, newImplement];
+    setImplements(updated);
+    saveImplementsMutation.mutate(updated);
+    return newImplement;
+  };
+
+  const updateImplement = (id: string, updates: Partial<Implement>) => {
+    const updated = implements.map((i) => (i.id === id ? { ...i, ...updates } : i));
+    setImplements(updated);
+    saveImplementsMutation.mutate(updated);
+  };
+
+  const deleteImplement = (id: string) => {
+    const updated = implements.filter((i) => i.id !== id);
+    setImplements(updated);
+    saveImplementsMutation.mutate(updated);
+  };
+
+
   const stats = useMemo(() => {
     const totalWork = workEntries.length;
     const totalAmount = workEntries.reduce((sum, e) => sum + e.totalAmount, 0);
@@ -268,12 +323,14 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     workEntries,
     payments,
     invoices,
+    implements,
     stats,
     isLoading:
       farmersQuery.isLoading ||
       workEntriesQuery.isLoading ||
       paymentsQuery.isLoading ||
-      invoicesQuery.isLoading,
+      invoicesQuery.isLoading ||
+      implementsQuery.isLoading,
     addFarmer,
     updateFarmer,
     deleteFarmer,
@@ -282,6 +339,9 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     deleteWorkEntry,
     addPayment,
     generateInvoice,
+    addImplement,
+    updateImplement,
+    deleteImplement,
     getFarmerStats,
     getFarmerWorkEntries,
   };
