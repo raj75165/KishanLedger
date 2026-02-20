@@ -1,5 +1,17 @@
 # KishanLedger — Farm Work Tracker
 
+## 🚀 Open the App Right Now
+
+**➡️ [https://raj75165.github.io/KishanLedger/](https://raj75165.github.io/KishanLedger/)**
+
+Just click the link above — no installation needed.
+
+> The live version is automatically updated every time code is pushed to `main` via GitHub Actions.
+>
+> **First-time setup (owner only):** Go to repository **Settings → Pages → Source** and select **"Deploy from a branch" → branch `gh-pages`**. After the first GitHub Actions run the link above will be live.
+
+---
+
 ## Project info
 
 Cross-platform mobile app (iOS, Android, Web) for farm work tracking and billing.
