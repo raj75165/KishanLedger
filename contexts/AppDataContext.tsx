@@ -326,6 +326,19 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     saveExpensesMutation.mutate(updated);
   };
 
+  const restoreData = async (backup: any) => {
+    const { farmers, workEntries, payments, invoices, implements, expenses } = backup;
+    await saveFarmersMutation.mutateAsync(farmers || []);
+    await saveWorkEntriesMutation.mutateAsync(workEntries || []);
+    await savePaymentsMutation.mutateAsync(payments || []);
+    await saveInvoicesMutation.mutateAsync(invoices || []);
+    await saveImplementsMutation.mutateAsync(implements || []);
+    await saveExpensesMutation.mutateAsync(expenses || []);
+
+    // Invalidate all queries to force a refetch
+    await queryClient.invalidateQueries();
+  };
+
 
   const stats = useMemo(() => {
     const totalWork = workEntries.length;
@@ -395,6 +408,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     addExpense,
     updateExpense,
     deleteExpense,
+    restoreData,
     getFarmerStats,
     getFarmerWorkEntries,
   };
