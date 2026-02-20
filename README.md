@@ -312,10 +312,23 @@ Before running `eas build --platform android`, copy it to `credentials.json` and
 
 1. **Generate a keystore** (skip if you already have one):
 
+   Run the following command **from the root of this project** (the folder that contains `package.json`):
+
    ```bash
-   keytool -genkey -v -keystore android/app/release.keystore \
-     -alias your-key-alias -keyalg RSA -keysize 2048 -validity 10000
+   # Run this from the project root, e.g.:
+   #   Windows:  cd C:\Users\YourName\KishanLedger
+   #   macOS/Linux: cd ~/KishanLedger
+
+   keytool -genkey -v -keystore release.keystore \
+     -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
    ```
+
+   `keytool` is bundled with the **Java Development Kit (JDK)**. If the command is not found,
+   [install JDK 17](https://adoptium.net/) and make sure it is on your `PATH`.
+
+   The command will ask you several questions (name, organisation, country) and a password — **remember this password**, you will need it in the next step. It creates a file called `release.keystore` in the project root.
+
+   > ⚠️ **Never commit `release.keystore`.** It is already covered by the `*.keystore` pattern in `.gitignore`.
 
 2. **Copy the template and fill in real values**:
 
@@ -323,16 +336,16 @@ Before running `eas build --platform android`, copy it to `credentials.json` and
    cp credentials.json.example credentials.json
    ```
 
-   Then edit `credentials.json` and replace the placeholder values:
+   Then edit `credentials.json` and replace the placeholder values with the ones you chose in step 1:
 
    ```json
    {
      "android": {
        "keystore": {
-         "keystorePath": "android/app/release.keystore",
-         "keystorePassword": "your-actual-keystore-password",
-         "keyAlias": "your-actual-key-alias",
-         "keyPassword": "your-actual-key-password"
+         "keystorePath": "release.keystore",
+         "keystorePassword": "the-password-you-chose",
+         "keyAlias": "my-key-alias",
+         "keyPassword": "the-password-you-chose"
        }
      }
    }
