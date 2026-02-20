@@ -81,6 +81,12 @@ function RootLayoutNav() {
           headerShown: false,
         }} 
       />
+      <Stack.Screen 
+        name="qr-code" 
+        options={{ 
+          headerShown: false,
+        }} 
+      />
     </Stack>
   );
 }

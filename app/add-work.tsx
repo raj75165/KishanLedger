@@ -12,7 +12,7 @@ import {
   Modal,
   FlatList,
 } from 'react-native';
-import { useRouter, Stack } from 'expo-router';
+import { useRouter, Stack, useFocusEffect } from 'expo-router';
 import {
   User,
   Tractor,
@@ -22,6 +22,8 @@ import {
   ChevronDown,
   X,
   Search,
+  AlertCircle,
+  Plus,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
@@ -39,10 +41,20 @@ export default function AddWorkScreen() {
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
   const [notes, setNotes] = useState('');
+  const [pendingFarmerModal, setPendingFarmerModal] = useState(false);
 
   const [showFarmerModal, setShowFarmerModal] = useState(false);
   const [showImplementModal, setShowImplementModal] = useState(false);
   const [farmerSearch, setFarmerSearch] = useState('');
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (pendingFarmerModal && farmers.length > 0) {
+        setPendingFarmerModal(false);
+        setShowFarmerModal(true);
+      }
+    }, [pendingFarmerModal, farmers.length])
+  );
 
   const filteredFarmers = useMemo(() => {
     if (!farmerSearch.trim()) return farmers;
@@ -120,6 +132,25 @@ export default function AddWorkScreen() {
           contentContainerStyle={styles.content}
           keyboardShouldPersistTaps="handled"
         >
+          {farmers.length === 0 && (
+            <View style={styles.noFarmerBanner}>
+              <AlertCircle size={20} color={Colors.accent} />
+              <View style={styles.noFarmerText}>
+                <Text style={styles.noFarmerTitle}>No farmers added yet</Text>
+                <Text style={styles.noFarmerSubtitle}>
+                  You need to add a farmer before creating a work entry.
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={styles.addFarmerInlineBtnWrapper}
+                onPress={() => router.push('/add-farmer' as any)}
+              >
+                <Plus size={16} color={Colors.white} />
+                <Text style={styles.addFarmerInlineBtn}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Select Farmer *</Text>
             <TouchableOpacity
@@ -283,6 +314,7 @@ export default function AddWorkScreen() {
                   style={styles.addFarmerBtn}
                   onPress={() => {
                     setShowFarmerModal(false);
+                    setPendingFarmerModal(true);
                     router.push('/add-farmer' as any);
                   }}
                 >
@@ -344,6 +376,44 @@ const styles = StyleSheet.create({
   content: {
     padding: 20,
     paddingBottom: 40,
+  },
+  noFarmerBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 152, 0, 0.1)',
+    borderRadius: 12,
+    padding: 14,
+    marginBottom: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 152, 0, 0.3)',
+    gap: 10,
+  },
+  noFarmerText: {
+    flex: 1,
+  },
+  noFarmerTitle: {
+    fontSize: 14,
+    fontWeight: '600' as const,
+    color: Colors.text,
+  },
+  noFarmerSubtitle: {
+    fontSize: 12,
+    color: Colors.textSecondary,
+    marginTop: 2,
+  },
+  addFarmerInlineBtnWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: Colors.primary,
+    borderRadius: 8,
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    gap: 4,
+  },
+  addFarmerInlineBtn: {
+    fontSize: 13,
+    fontWeight: '600' as const,
+    color: Colors.white,
   },
   inputGroup: {
     marginBottom: 20,
