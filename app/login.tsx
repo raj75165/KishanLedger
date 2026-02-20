@@ -28,16 +28,14 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSendOtp = async () => {
+  const handleSendOtp = () => {
     if (phone.length < 10) {
       setError('Please enter a valid 10-digit phone number');
       return;
     }
     setIsLoading(true);
     setError('');
-    
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+
     const success = sendOtp(phone);
     if (success) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -46,16 +44,14 @@ export default function LoginScreen() {
     setIsLoading(false);
   };
 
-  const handleVerifyOtp = async () => {
+  const handleVerifyOtp = () => {
     if (otp.length < 6) {
       setError('Please enter the 6-digit OTP');
       return;
     }
     setIsLoading(true);
     setError('');
-    
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    
+
     const success = verifyOtp(otp);
     if (success) {
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
@@ -67,7 +63,7 @@ export default function LoginScreen() {
     setIsLoading(false);
   };
 
-  const handleCompleteProfile = async () => {
+  const handleCompleteProfile = () => {
     if (!name.trim()) {
       setError('Please enter your name');
       return;
@@ -77,9 +73,7 @@ export default function LoginScreen() {
       return;
     }
     setIsLoading(true);
-    
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    
+
     completeLogin(name.trim(), businessName.trim());
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.replace('/(tabs)' as any);
@@ -186,8 +180,6 @@ export default function LoginScreen() {
                     }}
                   />
                 </View>
-
-                <Text style={styles.hint}>Demo: Enter any 6 digits</Text>
 
                 {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
@@ -365,13 +357,6 @@ const styles = StyleSheet.create({
   },
   fullInput: {
     paddingLeft: 16,
-  },
-  hint: {
-    fontSize: 12,
-    color: Colors.textLight,
-    textAlign: 'center',
-    marginBottom: 16,
-    fontStyle: 'italic',
   },
   errorText: {
     fontSize: 14,
