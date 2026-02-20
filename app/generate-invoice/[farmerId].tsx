@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import {
+  ArrowLeft,
   Calendar,
   FileText,
 } from 'lucide-react-native';
@@ -85,6 +86,11 @@ export default function GenerateInvoiceScreen() {
           title: 'Generate Invoice',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.white,
+          headerLeft: () => (
+            <TouchableOpacity onPress={router.back} style={{ paddingHorizontal: 15 }}>
+              <ArrowLeft size={24} color={Colors.white} />
+            </TouchableOpacity>
+          ),
         }}
       />
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
