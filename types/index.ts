@@ -67,3 +67,12 @@ export interface User {
   businessName: string;
   isLoggedIn: boolean;
 }
+
+export interface BackupData {
+  farmers: Farmer[];
+  workEntries: WorkEntry[];
+  payments: Payment[];
+  invoices: Invoice[];
+  exportedAt: string;
+  version: string;
+}

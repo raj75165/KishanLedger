@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
-import { User, LogOut, Save, Settings } from 'lucide-react-native';
+import { User, LogOut, Save, Settings, Database } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Haptics from 'expo-haptics';
@@ -138,6 +138,14 @@ export default function ProfileScreen() {
           </TouchableOpacity>
         )}
 
+        <TouchableOpacity
+          style={[styles.button, styles.backupButton]}
+          onPress={() => router.push('/backup' as any)}
+        >
+          <Database size={18} color={Colors.primary} />
+          <Text style={styles.backupButtonText}>Backup & Restore</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <LogOut size={20} color={Colors.error} />
           <Text style={styles.logoutText}>Logout</Text>
@@ -244,6 +252,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600' as const,
     color: Colors.white,
+  },
+  backupButton: {
+    backgroundColor: 'rgba(46, 125, 50, 0.1)',
+    marginTop: 12,
+  },
+  backupButtonText: {
+    fontSize: 16,
+    fontWeight: '600' as const,
+    color: Colors.primary,
   },
   logoutButton: {
     flexDirection: 'row',

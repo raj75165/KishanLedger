@@ -17,6 +17,7 @@ import {
   FileText,
   IndianRupee,
   Calendar,
+  Pencil,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
@@ -27,10 +28,10 @@ export default function FarmerDetailScreen() {
   const { farmers, getFarmerStats, getFarmerWorkEntries, deleteFarmer } = useAppData();
 
   const farmer = useMemo(() => farmers.find((f) => f.id === id), [farmers, id]);
-  const stats = useMemo(() => (farmer ? getFarmerStats(farmer.id) : null), [farmer]);
+  const stats = useMemo(() => (farmer ? getFarmerStats(farmer.id) : null), [farmer, getFarmerStats]);
   const workEntries = useMemo(
     () => (farmer ? getFarmerWorkEntries(farmer.id) : []),
-    [farmer]
+    [farmer, getFarmerWorkEntries]
   );
 
   const formatCurrency = (amount: number) => {
@@ -101,6 +102,13 @@ export default function FarmerDetailScreen() {
           </View>
 
           <View style={styles.actionButtons}>
+            <TouchableOpacity
+              style={[styles.actionBtn, styles.editBtn]}
+              onPress={() => router.push(`/add-farmer?farmerId=${farmer.id}` as any)}
+            >
+              <Pencil size={18} color={Colors.primary} />
+              <Text style={styles.editBtnText}>Edit</Text>
+            </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionBtn, styles.deleteBtn]}
               onPress={handleDelete}
@@ -259,6 +267,14 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     gap: 6,
+  },
+  editBtn: {
+    backgroundColor: 'rgba(46, 125, 50, 0.1)',
+  },
+  editBtnText: {
+    fontSize: 14,
+    fontWeight: '600' as const,
+    color: Colors.primary,
   },
   deleteBtn: {
     backgroundColor: 'rgba(244, 67, 54, 0.1)',

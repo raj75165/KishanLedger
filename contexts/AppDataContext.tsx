@@ -2,7 +2,7 @@ import createContextHook from '@nkzw/create-context-hook';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useState, useEffect, useMemo } from 'react';
-import { Farmer, WorkEntry, Payment, Invoice } from '@/types';
+import { Farmer, WorkEntry, Payment, Invoice, BackupData } from '@/types';
 
 const FARMERS_KEY = '@farm_app_farmers';
 const WORK_ENTRIES_KEY = '@farm_app_work_entries';
@@ -263,6 +263,32 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     return workEntries.filter((e) => e.farmerId === farmerId);
   };
 
+  const exportData = (): BackupData => {
+    return {
+      farmers,
+      workEntries,
+      payments,
+      invoices,
+      exportedAt: new Date().toISOString(),
+      version: '1.0.0',
+    };
+  };
+
+  const importData = async (data: BackupData): Promise<void> => {
+    await AsyncStorage.setItem(FARMERS_KEY, JSON.stringify(data.farmers));
+    await AsyncStorage.setItem(WORK_ENTRIES_KEY, JSON.stringify(data.workEntries));
+    await AsyncStorage.setItem(PAYMENTS_KEY, JSON.stringify(data.payments));
+    await AsyncStorage.setItem(INVOICES_KEY, JSON.stringify(data.invoices));
+    setFarmers(data.farmers);
+    setWorkEntries(data.workEntries);
+    setPayments(data.payments);
+    setInvoices(data.invoices);
+    queryClient.invalidateQueries({ queryKey: ['farmers'] });
+    queryClient.invalidateQueries({ queryKey: ['workEntries'] });
+    queryClient.invalidateQueries({ queryKey: ['payments'] });
+    queryClient.invalidateQueries({ queryKey: ['invoices'] });
+  };
+
   return {
     farmers,
     workEntries,
@@ -284,5 +310,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     generateInvoice,
     getFarmerStats,
     getFarmerWorkEntries,
+    exportData,
+    importData,
   };
 });

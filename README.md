@@ -1,11 +1,72 @@
-# Welcome to your Rork app
+# KishanLedger — Farm Work Tracker
+
+## 🚀 Open the App Right Now
+
+**➡️ [https://raj75165.github.io/KishanLedger/](https://raj75165.github.io/KishanLedger/)**
+
+Just click the link above — no installation needed.
+
+> The live version is automatically updated every time code is pushed to `main` via GitHub Actions.
+>
+> **First-time setup (owner only):** Go to repository **Settings → Pages → Source** and select **"Deploy from a branch" → branch `gh-pages`**. After the first GitHub Actions run the link above will be live.
+
+---
 
 ## Project info
 
-This is a native cross-platform mobile app created with [Rork](https://rork.com)
+Cross-platform mobile app (iOS, Android, Web) for farm work tracking and billing.
 
-**Platform**: Native iOS & Android app, exportable to web
-**Framework**: Expo Router + React Native
+**Framework**: Expo Router + React Native  
+**Platform**: iOS, Android, and Web (via React Native Web)
+
+---
+
+## 🌐 Testing on Web (Quick Start)
+
+**Yes, you can test this app directly in your browser!** Here's how:
+
+### Prerequisites
+
+Install [Node.js](https://nodejs.org/) (via [nvm](https://github.com/nvm-sh/nvm)) and [Bun](https://bun.sh/docs/installation).
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/raj75165/KishanLedger.git
+cd KishanLedger
+
+# 2. Install dependencies
+bun install
+
+# 3. Start the web server
+bun run web
+```
+
+This runs `npx expo start --web` and automatically opens **http://localhost:8081** in your browser.
+
+> **Tip:** Press `w` in the terminal at any time to open the web version.
+
+### What works on web
+
+| Feature | Web |
+|---|---|
+| Dashboard, Farmers, Work, Reports, Invoices | ✅ Works |
+| Add / Edit Farmer | ✅ Works |
+| Add Work Entry | ✅ Works |
+| Generate & View Invoice | ✅ Works |
+| Profile | ✅ Works |
+| Local Backup (export JSON) | ✅ Works |
+| Local Backup (import JSON) | ✅ Works |
+| Haptic feedback | ⚠️ Silently skipped on web |
+| Google Drive Backup | ⚠️ Requires OAuth client IDs (see `.env.example`) |
+
+### Known web limitations
+
+- Some native-only features (haptics, file system APIs) are silently skipped in the browser — the app still works, those features just do nothing.
+- The Google Drive backup requires setting up OAuth credentials in a `.env` file (see `.env.example`).
+
+---
 
 ## How can I edit this code?
 
@@ -76,7 +137,13 @@ This project is built with the most popular native mobile cross-platform technic
 
 ### **In your browser**
 
-Run `bun start-web` to test in a web browser. Note: The browser preview is great for quick testing, but some native features may not be available.
+Run `bun run web` to start the app in your browser — it opens at **http://localhost:8081** automatically.
+
+```bash
+bun run web
+```
+
+See the [Testing on Web](#-testing-on-web-quick-start) section at the top for a full guide and feature compatibility table.
 
 ### **iOS Simulator / Android Emulator**
 
