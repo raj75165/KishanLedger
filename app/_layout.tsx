@@ -11,9 +11,8 @@ SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
-// TODO: Replace with your Web Client ID from Google Cloud Console (OAuth 2.0 > Web application)
-// Follow setup: https://react-native-google-signin.github.io/docs/setting-up/get-config-file
-const WEB_CLIENT_ID = 'REPLACE_WITH_YOUR_WEB_CLIENT_ID.apps.googleusercontent.com';
+// Google Sign-In – Web Client ID (OAuth 2.0 → Web application) from Google Cloud Console
+const WEB_CLIENT_ID = '594087320964-7pdk3q04ii7h5mo2855f7a1vunns900h.apps.googleusercontent.com';
 
 function RootLayoutNav() {
   const { isLoggedIn, isLoading } = useAuth();
