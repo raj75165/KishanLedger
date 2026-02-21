@@ -30,7 +30,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
   const [workEntries, setWorkEntries] = useState<WorkEntry[]>([]);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [invoices, setInvoices] = useState<Invoice[]>([]);
-  const [implements, setImplements] = useState<Implement[]>([]);
+  const [implementsList, setImplementsList] = useState<Implement[]>([]);
   const [expenses, setExpenses] = useState<Expense[]>([]);
 
   const farmersQuery = useQuery({
@@ -103,7 +103,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
   }, [invoicesQuery.data]);
 
   useEffect(() => {
-    if (implementsQuery.data) setImplements(implementsQuery.data);
+    if (implementsQuery.data) setImplementsList(implementsQuery.data);
   }, [implementsQuery.data]);
 
   useEffect(() => {
@@ -285,21 +285,21 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
       ...implement,
       id: generateId(),
     };
-    const updated = [...implements, newImplement];
-    setImplements(updated);
+    const updated = [...implementsList, newImplement];
+    setImplementsList(updated);
     saveImplementsMutation.mutate(updated);
     return newImplement;
   };
 
   const updateImplement = (id: string, updates: Partial<Implement>) => {
-    const updated = implements.map((i) => (i.id === id ? { ...i, ...updates } : i));
-    setImplements(updated);
+    const updated = implementsList.map((i) => (i.id === id ? { ...i, ...updates } : i));
+    setImplementsList(updated);
     saveImplementsMutation.mutate(updated);
   };
 
   const deleteImplement = (id: string) => {
-    const updated = implements.filter((i) => i.id !== id);
-    setImplements(updated);
+    const updated = implementsList.filter((i) => i.id !== id);
+    setImplementsList(updated);
     saveImplementsMutation.mutate(updated);
   };
 
@@ -327,12 +327,12 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
   };
 
   const restoreData = async (backup: any) => {
-    const { farmers, workEntries, payments, invoices, implements, expenses } = backup;
+    const { farmers, workEntries, payments, invoices, implements: implementsData, expenses } = backup;
     await saveFarmersMutation.mutateAsync(farmers || []);
     await saveWorkEntriesMutation.mutateAsync(workEntries || []);
     await savePaymentsMutation.mutateAsync(payments || []);
     await saveInvoicesMutation.mutateAsync(invoices || []);
-    await saveImplementsMutation.mutateAsync(implements || []);
+    await saveImplementsMutation.mutateAsync(implementsData || []);
     await saveExpensesMutation.mutateAsync(expenses || []);
 
     // Invalidate all queries to force a refetch
@@ -384,7 +384,7 @@ export const [AppDataProvider, useAppData] = createContextHook(() => {
     workEntries,
     payments,
     invoices,
-    implements,
+    implements: implementsList,
     expenses,
     stats,
     isLoading:

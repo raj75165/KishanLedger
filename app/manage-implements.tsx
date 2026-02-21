@@ -4,12 +4,13 @@ import { useAppData } from '@/contexts/AppDataContext';
 import { Stack, useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
 import { Tractor, Plus } from 'lucide-react-native';
+import { Implement } from '@/types';
 
 export default function ManageImplementsScreen() {
-  const { implements } = useAppData();
+  const { implements: implementsList } = useAppData();
   const router = useRouter();
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Implement }) => (
     <View style={styles.itemContainer}>
       <Tractor size={24} color={Colors.primary} />
       <View style={styles.itemDetails}>
@@ -35,7 +36,7 @@ export default function ManageImplementsScreen() {
         }}
       />
       <FlatList
-        data={implements}
+        data={implementsList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}
