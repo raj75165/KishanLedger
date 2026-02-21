@@ -22,10 +22,14 @@ export default function BackupRestoreScreen() {
 
   useEffect(() => {
     const checkSignInStatus = async () => {
-      const isSignedIn = await GoogleSignin.isSignedIn();
-      if (isSignedIn) {
-        const currentUser = await GoogleSignin.getCurrentUser();
-        setUserInfo(currentUser);
+      const hasPreviousSignIn = await GoogleSignin.hasPreviousSignIn();
+      if (hasPreviousSignIn) {
+        try {
+          const currentUser = await GoogleSignin.signInSilently();
+          setUserInfo(currentUser);
+        } catch (error) {
+          // Silent sign-in failed; user will need to sign in manually
+        }
       }
     };
     checkSignInStatus();
