@@ -13,6 +13,7 @@ import { useAppData } from '@/contexts/AppDataContext';
 import { Colors } from '@/constants/colors';
 import { Save } from 'lucide-react-native';
 import { EXPENSE_CATEGORIES, ExpenseCategory } from '@/types';
+import DatePickerInput from '@/components/DatePickerInput';
 
 export default function AddExpenseScreen() {
   const router = useRouter();
@@ -40,7 +41,7 @@ export default function AddExpenseScreen() {
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.formGroup}>
           <Text style={styles.label}>Date</Text>
-          <TextInput style={styles.input} value={date} onChangeText={setDate} />
+          <DatePickerInput value={date} onChange={setDate} />
         </View>
 
         <View style={styles.formGroup}>
