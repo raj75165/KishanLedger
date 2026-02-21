@@ -10,12 +10,13 @@ import { useAppData } from '@/contexts/AppDataContext';
 import { Stack, useRouter } from 'expo-router';
 import { Colors } from '@/constants/colors';
 import { Plus } from 'lucide-react-native';
+import { Expense } from '@/types';
 
 export default function ExpensesScreen() {
   const { expenses } = useAppData();
   const router = useRouter();
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: { item: Expense }) => (
     <View style={styles.itemContainer}>
       <View style={styles.itemDetails}>
         <Text style={styles.itemCategory}>{item.category}</Text>

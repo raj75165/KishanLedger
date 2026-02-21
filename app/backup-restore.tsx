@@ -9,22 +9,24 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { Colors } from '@/constants/colors';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, GoogleSigninButton, statusCodes, User as GoogleUser, NativeModuleError } from '@react-native-google-signin/google-signin';
 import { UploadCloud, DownloadCloud, LogOut, ShieldCheck, ShieldAlert } from 'lucide-react-native';
 import { useAppData } from '@/contexts/AppDataContext';
 
 const BACKUP_FILE_NAME = 'kishan-ledger-backup.json';
 
+type DriveFile = { id: string; name: string };
+
 export default function BackupRestoreScreen() {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<GoogleUser | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const { restoreData, ...appData } = useAppData();
 
   useEffect(() => {
     const checkSignInStatus = async () => {
-      const isSignedIn = await GoogleSignin.isSignedIn();
-      if (isSignedIn) {
-        const currentUser = await GoogleSignin.getCurrentUser();
+      const hasPreviousSignIn = GoogleSignin.hasPreviousSignIn();
+      if (hasPreviousSignIn) {
+        const currentUser = GoogleSignin.getCurrentUser();
         setUserInfo(currentUser);
       }
     };
@@ -34,10 +36,12 @@ export default function BackupRestoreScreen() {
   const signIn = async () => {
     try {
       await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      setUserInfo(user);
+      const response = await GoogleSignin.signIn();
+      if (response.type === 'success') {
+        setUserInfo(response.data);
+      }
     } catch (error) {
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
+      if ((error as NativeModuleError).code !== statusCodes.SIGN_IN_CANCELLED) {
           Alert.alert('Sign-In Error', 'An unexpected error occurred during sign-in.');
       }
     }
@@ -57,7 +61,7 @@ export default function BackupRestoreScreen() {
         headers: { Authorization: `Bearer ${accessToken}` },
     });
     const data = await response.json();
-    const backupFile = data.files.find(file => file.name === BACKUP_FILE_NAME);
+    const backupFile = data.files.find((file: DriveFile) => file.name === BACKUP_FILE_NAME);
     return backupFile ? backupFile.id : null;
   }
 

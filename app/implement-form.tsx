@@ -17,7 +17,7 @@ import { Save } from 'lucide-react-native';
 export default function ImplementFormScreen() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id?: string }>();
-  const { implements, addImplement, updateImplement } = useAppData();
+  const { implements: implementsList, addImplement, updateImplement } = useAppData();
 
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('');
@@ -28,7 +28,7 @@ export default function ImplementFormScreen() {
 
   useEffect(() => {
     if (id) {
-      const existingImplement = implements.find((i) => i.id === id);
+      const existingImplement = implementsList.find((i) => i.id === id);
       if (existingImplement) {
         setIsEditing(true);
         setName(existingImplement.name);
@@ -38,7 +38,7 @@ export default function ImplementFormScreen() {
         setIcon(existingImplement.icon || '');
       }
     }
-  }, [id, implements]);
+  }, [id, implementsList]);
 
   const handleSubmit = () => {
     const rate = parseFloat(ratePerUnit);
