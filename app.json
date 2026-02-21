@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Kishan Diary",
-    "slug": "kishan-diary-app-pweswo4",
+    "name": "Kishan Ledger",
+    "slug": "kishan-ledger",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "rork-app",
+    "scheme": "kishanledger",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -15,14 +15,14 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "app.rork.farmer-implements-app-pweswo4"
+      "bundleIdentifier": "com.kishanledger.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "app.rork.farmer_implements_app_pweswo4"
+      "package": "com.kishanledger.app"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -35,7 +35,13 @@
         }
       ],
       "expo-font",
-      "expo-web-browser"
+      "expo-web-browser",
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.594087320964-REPLACE_WITH_IOS_CLIENT_HASH"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

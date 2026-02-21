@@ -25,13 +25,12 @@ import {
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
-import { IMPLEMENTS } from '@/constants/implements';
 import { Farmer, Implement } from '@/types';
 import * as Haptics from 'expo-haptics';
 
 export default function AddWorkScreen() {
   const router = useRouter();
-  const { farmers, addWorkEntry } = useAppData();
+  const { farmers, implements: implementsList, addWorkEntry } = useAppData();
 
   const [selectedFarmer, setSelectedFarmer] = useState<Farmer | null>(null);
   const [selectedImplement, setSelectedImplement] = useState<Implement | null>(null);
@@ -307,7 +306,7 @@ export default function AddWorkScreen() {
             </TouchableOpacity>
           </View>
           <FlatList
-            data={IMPLEMENTS}
+            data={implementsList}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
               <TouchableOpacity

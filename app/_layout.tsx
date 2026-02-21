@@ -11,7 +11,7 @@ SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
 
-// Configure Google Sign-In
+// Google Sign-In – Web Client ID (OAuth 2.0 → Web application) from Google Cloud Console
 const WEB_CLIENT_ID = '594087320964-7pdk3q04ii7h5mo2855f7a1vunns900h.apps.googleusercontent.com';
 
 function RootLayoutNav() {
@@ -91,11 +91,10 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   useEffect(() => {
-    // Initialize Google Sign-In
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
       webClientId: WEB_CLIENT_ID,
-      offlineAccess: true, // Required for refreshing tokens
+      scopes: ['https://www.googleapis.com/auth/drive.appdata'],
+      offlineAccess: true,
     });
     SplashScreen.hideAsync();
   }, []);
