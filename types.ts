@@ -3,6 +3,9 @@ export type Farmer = {
   name: string;
   village: string;
   phone: string;
+  address?: string;
+  landArea?: number;
+  landUnit?: string;
   createdAt: string;
 };
 
@@ -22,10 +25,11 @@ export type WorkEntry = {
   implementId: string;
   implementName: string;
   date: string;
-  area: number;
+  quantity: number;
   unit: string;
   rate: number;
   totalAmount: number;
+  notes?: string;
   isPaid: boolean;
   paymentMethod?: 'cash' | 'upi' | 'bank';
   paymentDate?: string;
@@ -35,6 +39,7 @@ export type WorkEntry = {
 export type Payment = {
   id: string;
   farmerId: string;
+  farmerName?: string;
   workEntryIds: string[];
   amount: number;
   date: string;

@@ -5,14 +5,10 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppDataProvider } from "@/contexts/AppDataContext";
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
-
-// Configure Google Sign-In
-const WEB_CLIENT_ID = '594087320964-7pdk3q04ii7h5mo2855f7a1vunns900h.apps.googleusercontent.com';
 
 function RootLayoutNav() {
   const { isLoggedIn, isLoading } = useAuth();
@@ -91,12 +87,6 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   useEffect(() => {
-    // Initialize Google Sign-In
-    GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
-      webClientId: WEB_CLIENT_ID,
-      offlineAccess: true, // Required for refreshing tokens
-    });
     SplashScreen.hideAsync();
   }, []);
 
