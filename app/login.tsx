@@ -9,10 +9,11 @@ import {
   Platform,
   ScrollView,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Tractor, Phone, Shield, ArrowRight } from 'lucide-react-native';
+import { Phone, Shield, ArrowRight } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Haptics from 'expo-haptics';
@@ -102,7 +103,11 @@ export default function LoginScreen() {
         >
           <View style={styles.header}>
             <View style={styles.iconContainer}>
-              <Tractor size={48} color={Colors.white} />
+              <Image
+                source={require('@/assets/images/icon.png')}
+                style={styles.logoImage}
+                resizeMode="cover"
+              />
             </View>
             <Text style={styles.title}>Farm Work Tracker</Text>
             <Text style={styles.subtitle}>
@@ -291,6 +296,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16,
+    overflow: 'hidden',
+  },
+  logoImage: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
   },
   title: {
     fontSize: 28,
