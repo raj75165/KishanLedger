@@ -5,10 +5,15 @@ import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { AppDataProvider } from "@/contexts/AppDataContext";
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 SplashScreen.preventAutoHideAsync();
 
 const queryClient = new QueryClient();
+
+// TODO: Replace with your Web Client ID from Google Cloud Console (OAuth 2.0 > Web application)
+// Follow setup: https://react-native-google-signin.github.io/docs/setting-up/get-config-file
+const WEB_CLIENT_ID = 'REPLACE_WITH_YOUR_WEB_CLIENT_ID.apps.googleusercontent.com';
 
 function RootLayoutNav() {
   const { isLoggedIn, isLoading } = useAuth();
@@ -87,6 +92,11 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: WEB_CLIENT_ID,
+      scopes: ['https://www.googleapis.com/auth/drive.appdata'],
+      offlineAccess: true,
+    });
     SplashScreen.hideAsync();
   }, []);
 
