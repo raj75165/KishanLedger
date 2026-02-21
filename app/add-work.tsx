@@ -16,7 +16,6 @@ import { useRouter, Stack } from 'expo-router';
 import {
   User,
   Tractor,
-  Calendar,
   IndianRupee,
   Check,
   ChevronDown,
@@ -28,6 +27,7 @@ import { useAppData } from '@/contexts/AppDataContext';
 import { IMPLEMENTS } from '@/constants/implements';
 import { Farmer, Implement } from '@/types';
 import * as Haptics from 'expo-haptics';
+import DatePickerInput from '@/components/DatePickerInput';
 
 export default function AddWorkScreen() {
   const router = useRouter();
@@ -162,16 +162,7 @@ export default function AddWorkScreen() {
 
           <View style={styles.inputGroup}>
             <Text style={styles.label}>Date *</Text>
-            <View style={styles.inputContainer}>
-              <Calendar size={20} color={Colors.textSecondary} />
-              <TextInput
-                style={styles.input}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor={Colors.textLight}
-                value={date}
-                onChangeText={setDate}
-              />
-            </View>
+            <DatePickerInput value={date} onChange={setDate} />
           </View>
 
           <View style={styles.row}>

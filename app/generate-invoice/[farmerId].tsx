@@ -5,18 +5,17 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  TextInput,
   Alert,
 } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import {
   ArrowLeft,
-  Calendar,
   FileText,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
 import * as Haptics from 'expo-haptics';
+import DatePickerInput from '@/components/DatePickerInput';
 
 export default function GenerateInvoiceScreen() {
   const { farmerId } = useLocalSearchParams<{ farmerId: string }>();
@@ -105,29 +104,11 @@ export default function GenerateInvoiceScreen() {
           <View style={styles.dateRow}>
             <View style={styles.dateInput}>
               <Text style={styles.dateLabel}>From</Text>
-              <View style={styles.inputContainer}>
-                <Calendar size={18} color={Colors.textSecondary} />
-                <TextInput
-                  style={styles.input}
-                  value={fromDate}
-                  onChangeText={setFromDate}
-                  placeholder="YYYY-MM-DD"
-                  placeholderTextColor={Colors.textLight}
-                />
-              </View>
+              <DatePickerInput value={fromDate} onChange={setFromDate} />
             </View>
             <View style={styles.dateInput}>
               <Text style={styles.dateLabel}>To</Text>
-              <View style={styles.inputContainer}>
-                <Calendar size={18} color={Colors.textSecondary} />
-                <TextInput
-                  style={styles.input}
-                  value={toDate}
-                  onChangeText={setToDate}
-                  placeholder="YYYY-MM-DD"
-                  placeholderTextColor={Colors.textLight}
-                />
-              </View>
+              <DatePickerInput value={toDate} onChange={setToDate} />
             </View>
           </View>
         </View>
