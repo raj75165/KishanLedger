@@ -32,7 +32,7 @@ export default function ExpensesScreen() {
         options={{
           title: 'Expenses',
           headerRight: () => (
-            <TouchableOpacity onPress={() => router.push('/add-expense')}>
+            <TouchableOpacity onPress={() => router.push('/(modals)/add-expense')}>
               <Plus size={24} color={Colors.primary} />
             </TouchableOpacity>
           ),

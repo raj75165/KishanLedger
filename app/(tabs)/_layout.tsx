@@ -1,24 +1,29 @@
-import { Tabs } from 'expo-router';
-import { Home, Users, Tractor, FileText, Wallet, TrendingUp } from 'lucide-react-native';
+import { Tabs, useRouter } from 'expo-router';
+import { Home, Users, Tractor, FileText, Wallet, TrendingUp, Plus } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
+import { TouchableOpacity } from 'react-native';
 
 export default function TabLayout() {
+  const router = useRouter();
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
         tabBarInactiveTintColor: Colors.textLight,
         headerShown: false,
+        headerStyle: { backgroundColor: Colors.primary },
+        headerTintColor: Colors.white,
         tabBarStyle: {
           backgroundColor: Colors.white,
           borderTopColor: Colors.border,
-          paddingTop: 4,
-          height: 60,
+          paddingTop: 8,
+          paddingBottom: 8,
+          height: 70,
         },
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '500',
-          marginBottom: 6,
         },
       }}
     >
@@ -47,7 +52,13 @@ export default function TabLayout() {
         name="expenses"
         options={{
           title: 'Expenses',
+          headerShown: true, // Show header specifically for this tab
           tabBarIcon: ({ color, size }) => <Wallet size={size} color={color} />,
+          headerRight: () => (
+            <TouchableOpacity onPress={() => router.push('/(modals)/add-expense')} style={{ paddingRight: 15 }}>
+              <Plus size={24} color={Colors.white} />
+            </TouchableOpacity>
+          ),
         }}
       />
       <Tabs.Screen

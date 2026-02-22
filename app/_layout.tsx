@@ -34,7 +34,9 @@ function RootLayoutNav() {
   return (
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen 
+      <Stack.Screen name="(modals)" options={{ presentation: 'modal', headerShown: false }} />
+      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+      <Stack.Screen
         name="login" 
         options={{ 
           headerShown: false,
@@ -93,7 +95,7 @@ export default function RootLayout() {
   useEffect(() => {
     // Initialize Google Sign-In
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.file'],
+      scopes: ['https://www.googleapis.com/auth/drive.appdata'], // Use the correct scope
       webClientId: WEB_CLIENT_ID,
       offlineAccess: true, // Required for refreshing tokens
     });
