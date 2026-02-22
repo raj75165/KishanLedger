@@ -9,14 +9,14 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter, Stack } from 'expo-router';
-import { User, LogOut, Save, Settings, ChevronRight, DatabaseBackup } from 'lucide-react-native';
+import { User, Save, Settings, ChevronRight, DatabaseBackup } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Haptics from 'expo-haptics';
 
 export default function ProfileScreen() {
   const router = useRouter();
-  const { user, updateProfile, logout } = useAuth();
+  const { user, updateProfile } = useAuth();
 
   const [name, setName] = useState(user?.name || '');
   const [businessName, setBusinessName] = useState(user?.businessName || '');
@@ -30,24 +30,6 @@ export default function ProfileScreen() {
     updateProfile({ name: name.trim(), businessName: businessName.trim() });
     setIsEditing(false);
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-  };
-
-  const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: () => {
-            logout();
-            router.replace('/login' as any);
-          },
-        },
-      ]
-    );
   };
 
   return (
@@ -146,11 +128,6 @@ export default function ProfileScreen() {
                 <ChevronRight size={22} color={Colors.textLight} />
             </TouchableOpacity>
         </View>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-          <LogOut size={20} color={Colors.error} />
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
 
         <Text style={styles.version}>Farm Work Tracker v1.0.0</Text>
       </ScrollView>
@@ -277,21 +254,6 @@ const styles = StyleSheet.create({
       fontSize: 16,
       fontWeight: '500',
       color: Colors.text
-  },
-  logoutButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(244, 67, 54, 0.1)',
-    borderRadius: 12,
-    padding: 16,
-    marginTop: 20,
-    gap: 8,
-  },
-  logoutText: {
-    fontSize: 16,
-    fontWeight: '600' as const,
-    color: Colors.error,
   },
   version: {
     textAlign: 'center',
