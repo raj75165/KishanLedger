@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,47 +9,24 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { Colors } from '@/constants/colors';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { UploadCloud, DownloadCloud, LogOut, ShieldCheck, ShieldAlert } from 'lucide-react-native';
 import { useAppData } from '@/contexts/AppDataContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const BACKUP_FILE_NAME = 'kishan-ledger-backup.json';
 
 export default function BackupRestoreScreen() {
-  const [userInfo, setUserInfo] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const { restoreData, ...appData } = useAppData();
-
-  useEffect(() => {
-    const checkSignInStatus = async () => {
-      const isSignedIn = await GoogleSignin.isSignedIn();
-      if (isSignedIn) {
-        const currentUser = await GoogleSignin.getCurrentUser();
-        setUserInfo(currentUser);
-      }
-    };
-    checkSignInStatus();
-  }, []);
+  const { googleUser, googleSignIn, googleSignOut } = useAuth();
 
   const signIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const user = await GoogleSignin.signIn();
-      setUserInfo(user);
-    } catch (error) {
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
-          Alert.alert('Sign-In Error', 'An unexpected error occurred during sign-in.');
-      }
-    }
+    await googleSignIn();
   };
 
   const signOut = async () => {
-    try {
-      await GoogleSignin.signOut();
-      setUserInfo(null);
-    } catch (error) {
-      console.error(error);
-    }
+    await googleSignOut();
   };
 
   const getDriveFileId = async (accessToken: string): Promise<string | null> => {
@@ -62,7 +39,7 @@ export default function BackupRestoreScreen() {
   }
 
   const handleBackup = async () => {
-    if (!userInfo) {
+    if (!googleUser) {
         Alert.alert('Not Signed In', 'Please sign in with Google first.');
         return;
     }
@@ -111,7 +88,7 @@ export default function BackupRestoreScreen() {
   };
 
   const handleRestore = async () => {
-    if (!userInfo) {
+    if (!googleUser) {
         Alert.alert('Not Signed In', 'Please sign in with Google first.');
         return;
     }
@@ -161,11 +138,11 @@ export default function BackupRestoreScreen() {
       <Stack.Screen options={{ title: 'Backup & Restore' }} />
       <View style={styles.container}>
         <View style={styles.statusCard}>
-          {userInfo ? (
+          {googleUser ? (
             <>
               <ShieldCheck size={40} color={Colors.success} />
               <Text style={styles.statusText}>Signed in as:</Text>
-              <Text style={styles.emailText}>{userInfo.user.email}</Text>
+              <Text style={styles.emailText}>{googleUser.user.email}</Text>
             </>
           ) : (
             <>
@@ -176,7 +153,7 @@ export default function BackupRestoreScreen() {
           )}
         </View>
 
-        {userInfo ? (
+        {googleUser ? (
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.actionButton} onPress={handleBackup} disabled={isProcessing}>
                 <UploadCloud size={24} color={Colors.white} />
