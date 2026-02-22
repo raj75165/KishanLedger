@@ -6,12 +6,15 @@ import {
   ScrollView,
   TouchableOpacity,
   Share,
+  Linking,
+  Alert,
 } from 'react-native';
 import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 import {
   FileText,
   Calendar,
   Share2,
+  MessageCircle,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
@@ -37,10 +40,9 @@ export default function InvoiceDetailScreen() {
     });
   };
 
-  const handleShare = async () => {
-    if (!invoice) return;
-
-    const text = `
+  const buildInvoiceText = () => {
+    if (!invoice) return '';
+    return `
 INVOICE: ${invoice.invoiceNumber}
 From: ${user?.businessName || 'Farm Services'}
 To: ${invoice.farmerName}
@@ -55,7 +57,11 @@ Balance Due: ${formatCurrency(invoice.pendingAmount)}
 
 Generated on: ${formatDate(invoice.generatedAt)}
     `.trim();
+  };
 
+  const handleShare = async () => {
+    if (!invoice) return;
+    const text = buildInvoiceText();
     try {
       await Share.share({
         message: text,
@@ -63,6 +69,22 @@ Generated on: ${formatDate(invoice.generatedAt)}
       });
     } catch (error) {
       console.log('Share error:', error);
+    }
+  };
+
+  const handleShareWhatsApp = async () => {
+    if (!invoice) return;
+    const text = buildInvoiceText();
+    const url = `whatsapp://send?text=${encodeURIComponent(text)}`;
+    try {
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        Alert.alert('WhatsApp Not Found', 'WhatsApp is not installed on this device.');
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Could not open WhatsApp. Please make sure it is installed.');
     }
   };
 
@@ -172,6 +194,15 @@ Generated on: ${formatDate(invoice.generatedAt)}
         <TouchableOpacity style={styles.shareButton} onPress={handleShare}>
           <Share2 size={20} color={Colors.white} />
           <Text style={styles.shareButtonText}>Share Invoice</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.whatsappButton}
+          onPress={handleShareWhatsApp}
+          accessibilityLabel="Share invoice on WhatsApp"
+        >
+          <MessageCircle size={20} color={Colors.white} />
+          <Text style={styles.whatsappButtonText}>Share on WhatsApp</Text>
         </TouchableOpacity>
       </ScrollView>
     </>
@@ -359,6 +390,21 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   shareButtonText: {
+    fontSize: 16,
+    fontWeight: '600' as const,
+    color: Colors.white,
+  },
+  whatsappButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#25D366',
+    borderRadius: 12,
+    padding: 16,
+    marginTop: 12,
+    gap: 8,
+  },
+  whatsappButtonText: {
     fontSize: 16,
     fontWeight: '600' as const,
     color: Colors.white,
