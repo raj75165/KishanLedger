@@ -6,7 +6,7 @@ import { Colors } from '@/constants/colors';
 import { Tractor, Plus } from 'lucide-react-native';
 
 export default function ManageImplementsScreen() {
-  const { implements } = useAppData();
+  const { implementList } = useAppData();
   const router = useRouter();
 
   const renderItem = ({ item }) => (
@@ -35,7 +35,7 @@ export default function ManageImplementsScreen() {
         }}
       />
       <FlatList
-        data={implements}
+        data={implementList}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContainer}

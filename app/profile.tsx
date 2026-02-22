@@ -140,7 +140,7 @@ export default function ProfileScreen() {
 
         <View style={styles.dataSection}>
             <Text style={styles.sectionTitle}>Data Management</Text>
-            <TouchableOpacity style={styles.dataButton} onPress={() => router.push('/backup-restore')}>
+            <TouchableOpacity style={styles.dataButton} onPress={() => router.push('/(screens)/backup-restore')}>
                 <DatabaseBackup size={22} color={Colors.primary} />
                 <Text style={styles.dataButtonText}>Backup & Restore</Text>
                 <ChevronRight size={22} color={Colors.textLight} />
