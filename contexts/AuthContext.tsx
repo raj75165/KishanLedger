@@ -19,14 +19,11 @@ type GoogleUser = {
 };
 
 const AUTH_STORAGE_KEY = '@farm_app_auth';
-const MAGIC_OTP = '123456'; // For demo purposes
 
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [otpSent, setOtpSent] = useState(false);
-  const [pendingPhone, setPendingPhone] = useState('');
   const [googleUser, setGoogleUser] = useState<GoogleUser | null>(null);
 
   useEffect(() => {
@@ -93,48 +90,6 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     },
   });
 
-  const logoutMutation = useMutation({
-    mutationFn: async () => {
-      await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
-    },
-    onSuccess: () => {
-      setUser(null);
-      setOtpSent(false);
-      setPendingPhone('');
-      queryClient.invalidateQueries({ queryKey: ['auth'] });
-    },
-  });
-
-  const sendOtp = (phone: string) => {
-    // In a real app, you would integrate with an SMS service like Firebase here.
-    console.log(`Sending OTP to ${phone}. For demo, use: ${MAGIC_OTP}`);
-    setPendingPhone(phone);
-    setOtpSent(true);
-    return true;
-  };
-
-  const verifyOtp = (otp: string): boolean => {
-    // In a real app, you would send the OTP to your backend for verification.
-    if (otp === MAGIC_OTP) {
-      return true;
-    }
-    return false;
-  };
-
-  const completeLogin = (name: string, businessName: string) => {
-    const userData: User = {
-      phone: pendingPhone,
-      name,
-      businessName,
-      isLoggedIn: true,
-    };
-    loginMutation.mutate(userData);
-  };
-
-  const logout = () => {
-    logoutMutation.mutate();
-  };
-
   const updateProfile = (updates: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...updates };
@@ -145,20 +100,9 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   return {
     user,
     isLoading: isLoading || authQuery.isLoading,
-    isLoggedIn: !!user?.isLoggedIn,
-    otpSent,
-    pendingPhone,
     googleUser,
-    sendOtp,
-    verifyOtp,
-    completeLogin,
     googleSignIn,
     googleSignOut,
-    logout,
     updateProfile,
-    resetOtpState: () => {
-      setOtpSent(false);
-      setPendingPhone('');
-    },
   };
 });
