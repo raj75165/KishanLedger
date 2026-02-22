@@ -5,14 +5,11 @@ import { useState, useEffect } from 'react';
 import { User } from '@/types';
 
 const AUTH_STORAGE_KEY = '@farm_app_auth';
-const MAGIC_OTP = '123456'; // For demo purposes
 
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const queryClient = useQueryClient();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [otpSent, setOtpSent] = useState(false);
-  const [pendingPhone, setPendingPhone] = useState('');
 
   const authQuery = useQuery({
     queryKey: ['auth'],
@@ -46,33 +43,17 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     },
     onSuccess: () => {
       setUser(null);
-      setOtpSent(false);
-      setPendingPhone('');
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
   });
 
-  const sendOtp = (phone: string) => {
-    // In a real app, you would integrate with an SMS service like Firebase here.
-    console.log(`Sending OTP to ${phone}. For demo, use: ${MAGIC_OTP}`);
-    setPendingPhone(phone);
-    setOtpSent(true);
-    return true;
-  };
-
-  const verifyOtp = (otp: string): boolean => {
-    // In a real app, you would send the OTP to your backend for verification.
-    if (otp === MAGIC_OTP) {
-      return true;
-    }
-    return false;
-  };
-
-  const completeLogin = (name: string, businessName: string) => {
+  const signInWithGoogle = (googleUser: any) => {
+    // Check if a user profile already exists. If so, use it. Otherwise, create a new one.
+    const existingUser = authQuery.data;
     const userData: User = {
-      phone: pendingPhone,
-      name,
-      businessName,
+      phone: existingUser?.phone || googleUser.user.email, // Prefer existing phone/email
+      name: existingUser?.name || googleUser.user.name,
+      businessName: existingUser?.businessName || '',
       isLoggedIn: true,
     };
     loginMutation.mutate(userData);
@@ -93,16 +74,8 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     user,
     isLoading: isLoading || authQuery.isLoading,
     isLoggedIn: !!user?.isLoggedIn,
-    otpSent,
-    pendingPhone,
-    sendOtp,
-    verifyOtp,
-    completeLogin,
+    signInWithGoogle,
     logout,
     updateProfile,
-    resetOtpState: () => {
-      setOtpSent(false);
-      setPendingPhone('');
-    },
   };
 });
