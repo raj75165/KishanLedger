@@ -19,6 +19,7 @@ import {
   TrendingUp,
   ChevronRight,
   Wrench,
+  Wallet,
 } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
@@ -145,12 +146,12 @@ export default function DashboardScreen() {
 
             <TouchableOpacity
               style={styles.actionButton}
-              onPress={() => router.push('/(tabs)/invoices' as any)}
+              onPress={() => router.push('/add-expense' as any)}
             >
-              <View style={[styles.actionIcon, { backgroundColor: Colors.accent }]}>
-                <FileText size={22} color={Colors.white} />
+              <View style={[styles.actionIcon, { backgroundColor: '#E91E63' }]}>
+                <Wallet size={22} color={Colors.white} />
               </View>
-              <Text style={styles.actionText}>Invoice</Text>
+              <Text style={styles.actionText}>Add Expense</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -161,6 +162,48 @@ export default function DashboardScreen() {
                 <Wrench size={22} color={Colors.white} />
               </View>
               <Text style={styles.actionText}>Implements</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={[styles.actionsRow, { marginTop: 16 }]}>
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/(tabs)/farmers' as any)}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: '#0288D1' }]}>
+                <Users size={22} color={Colors.white} />
+              </View>
+              <Text style={styles.actionText}>Farmers</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/(tabs)/work' as any)}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: '#00897B' }]}>
+                <Tractor size={22} color={Colors.white} />
+              </View>
+              <Text style={styles.actionText}>Work</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/(tabs)/invoices' as any)}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: Colors.accent }]}>
+                <FileText size={22} color={Colors.white} />
+              </View>
+              <Text style={styles.actionText}>Invoices</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.actionButton}
+              onPress={() => router.push('/(tabs)/reports' as any)}
+            >
+              <View style={[styles.actionIcon, { backgroundColor: '#7B1FA2' }]}>
+                <TrendingUp size={22} color={Colors.white} />
+              </View>
+              <Text style={styles.actionText}>Reports</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -273,7 +316,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: 20,
-    paddingBottom: 100,
+    paddingBottom: 112,
   },
   statsGrid: {
     flexDirection: 'row',
