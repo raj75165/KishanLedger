@@ -90,6 +90,16 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     },
   });
 
+  const saveProfile = (name: string, businessName: string, phone: string = '') => {
+    const userData: User = {
+      phone,
+      name,
+      businessName,
+      isLoggedIn: true,
+    };
+    loginMutation.mutate(userData);
+  };
+
   const updateProfile = (updates: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...updates };
@@ -103,6 +113,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     googleUser,
     googleSignIn,
     googleSignOut,
+    saveProfile,
     updateProfile,
   };
 });
