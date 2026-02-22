@@ -47,7 +47,7 @@ To: ${invoice.farmerName}
 Period: ${formatDate(invoice.fromDate)} - ${formatDate(invoice.toDate)}
 
 Work Details:
-${invoice.workEntries.map((e) => `- ${e.implementName}: ${e.quantity} ${e.unit} = ${formatCurrency(e.totalAmount)}`).join('\n')}
+${invoice.workEntries.map((e) => `- ${e.implementName} (${formatDate(e.date)}): ${e.quantity} ${e.unit} = ${formatCurrency(e.totalAmount)}`).join('\n')}
 
 Total Amount: ${formatCurrency(invoice.totalAmount)}
 Paid: ${formatCurrency(invoice.paidAmount)}
