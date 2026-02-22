@@ -27,7 +27,7 @@ export default function ExpensesScreen() {
   );
 
   return (
-    <>
+    <View style={styles.container}>
       <Stack.Screen
         options={{
           title: 'Expenses',
@@ -49,13 +49,24 @@ export default function ExpensesScreen() {
           </View>
         )}
       />
-    </>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => router.push('/add-expense' as any)}
+      >
+        <Plus size={28} color={Colors.white} />
+      </TouchableOpacity>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.background,
+  },
   listContainer: {
     padding: 16,
+    paddingBottom: 100,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -74,7 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: Colors.text,
   },
-    itemDescription: {
+  itemDescription: {
     fontSize: 14,
     color: Colors.textSecondary,
     marginTop: 4,
@@ -99,5 +110,21 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     color: Colors.textSecondary,
+  },
+  fab: {
+    position: 'absolute',
+    right: 20,
+    bottom: 20,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: Colors.primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: Colors.black,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 6,
+    elevation: 8,
   },
 });
