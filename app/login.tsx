@@ -16,10 +16,11 @@ import { Tractor, Phone, Shield, ArrowRight } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
 import * as Haptics from 'expo-haptics';
+import { GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 export default function LoginScreen() {
   const router = useRouter();
-  const { sendOtp, verifyOtp, completeLogin, resetOtpState } = useAuth();
+  const { sendOtp, verifyOtp, completeLogin, resetOtpState, googleSignIn } = useAuth();
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [name, setName] = useState('');
@@ -90,6 +91,20 @@ export default function LoginScreen() {
     setError('');
   };
 
+  const handleGoogleSignIn = async () => {
+    setIsLoading(true);
+    setError('');
+    const signedInUser = await googleSignIn();
+    if (signedInUser) {
+      setName(signedInUser.user.name || '');
+      setStep('profile');
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } else {
+      setError('Google Sign-In failed. Please try again.');
+    }
+    setIsLoading(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -153,6 +168,20 @@ export default function LoginScreen() {
                     </>
                   )}
                 </TouchableOpacity>
+
+                <View style={styles.divider}>
+                  <View style={styles.dividerLine} />
+                  <Text style={styles.dividerText}>OR</Text>
+                  <View style={styles.dividerLine} />
+                </View>
+
+                <GoogleSigninButton
+                  style={styles.googleButton}
+                  size={GoogleSigninButton.Size.Wide}
+                  color={GoogleSigninButton.Color.Dark}
+                  onPress={handleGoogleSignIn}
+                  disabled={isLoading}
+                />
               </>
             )}
 
@@ -390,6 +419,26 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     fontWeight: '500' as const,
   },
+  divider: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 16,
+  },
+  dividerLine: {
+    flex: 1,
+    height: 1,
+    backgroundColor: Colors.border,
+  },
+  dividerText: {
+    marginHorizontal: 12,
+    fontSize: 14,
+    color: Colors.textSecondary,
+    fontWeight: '500' as const,
+  },
+  googleButton: {
+    width: '100%',
+    height: 56,
+  } as const,
   footer: {
     textAlign: 'center',
     color: 'rgba(255,255,255,0.7)',
