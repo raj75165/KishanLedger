@@ -170,6 +170,7 @@ export default function AddWorkScreen() {
                 placeholderTextColor={Colors.textLight}
                 value={date}
                 onChangeText={setDate}
+                keyboardType="numeric"
               />
             </View>
           </View>

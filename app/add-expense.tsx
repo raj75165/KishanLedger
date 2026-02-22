@@ -40,7 +40,7 @@ export default function AddExpenseScreen() {
       <ScrollView style={styles.container} contentContainerStyle={styles.content}>
         <View style={styles.formGroup}>
           <Text style={styles.label}>Date</Text>
-          <TextInput style={styles.input} value={date} onChangeText={setDate} />
+          <TextInput style={styles.input} value={date} onChangeText={setDate} keyboardType="numeric" />
         </View>
 
         <View style={styles.formGroup}>

@@ -113,6 +113,7 @@ export default function GenerateInvoiceScreen() {
                   onChangeText={setFromDate}
                   placeholder="YYYY-MM-DD"
                   placeholderTextColor={Colors.textLight}
+                  keyboardType="numeric"
                 />
               </View>
             </View>
@@ -126,6 +127,7 @@ export default function GenerateInvoiceScreen() {
                   onChangeText={setToDate}
                   placeholder="YYYY-MM-DD"
                   placeholderTextColor={Colors.textLight}
+                  keyboardType="numeric"
                 />
               </View>
             </View>
