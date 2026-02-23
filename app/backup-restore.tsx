@@ -41,8 +41,15 @@ export default function BackupRestoreScreen() {
       const user = await GoogleSignin.signIn();
       setUserInfo(user);
     } catch (error) {
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
-          Alert.alert('Sign-In Error', 'An unexpected error occurred during sign-in.');
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled, do nothing
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        Alert.alert('Sign-In Error', 'Google Play Services is not available on this device.');
+      } else {
+        Alert.alert(
+          'Sign-In Error',
+          'Could not sign in with Google. Please try again or contact support if the issue persists.'
+        );
       }
     }
   };
