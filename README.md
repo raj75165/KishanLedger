@@ -305,6 +305,61 @@ For mobile apps, you'll configure your app's deep linking scheme in `app.json`.
 2. Delete `node_modules` and reinstall: `rm -rf node_modules && bun install`
 3. Check [Expo's troubleshooting guide](https://docs.expo.dev/troubleshooting/build-errors/)
 
+### **`credentials.json` not found / Android signing error?**
+
+The `credentials.json.example` file at the root of this project is a **template** for local Android signing.
+Before running `eas build --platform android`, copy it to `credentials.json` and fill in the real values:
+
+1. **Generate a keystore** (skip if you already have one):
+
+   Run the following command **from the root of this project** (the folder that contains `package.json`):
+
+   ```bash
+   # Run this from the project root, e.g.:
+   #   Windows:  cd C:\Users\YourName\KishanLedger
+   #   macOS/Linux: cd ~/KishanLedger
+
+   keytool -genkey -v -keystore release.keystore \
+     -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+   `keytool` is bundled with the **Java Development Kit (JDK)**. If the command is not found,
+   [install JDK 17](https://adoptium.net/) and make sure it is on your `PATH`.
+
+   The command will ask you several questions (name, organisation, country) and a password — **remember this password**, you will need it in the next step. It creates a file called `release.keystore` in the project root.
+
+   > ⚠️ **Never commit `release.keystore`.** It is already covered by the `*.keystore` pattern in `.gitignore`.
+
+2. **Copy the template and fill in real values**:
+
+   ```bash
+   cp credentials.json.example credentials.json
+   ```
+
+   Then edit `credentials.json` and replace the placeholder values with the ones you chose in step 1:
+
+   ```json
+   {
+     "android": {
+       "keystore": {
+         "keystorePath": "release.keystore",
+         "keystorePassword": "the-password-you-chose",
+         "keyAlias": "my-key-alias",
+         "keyPassword": "the-password-you-chose"
+       }
+     }
+   }
+   ```
+
+   > ⚠️ **`credentials.json` is listed in `.gitignore` and will never be committed.** Keep it private and do not share it. Only `credentials.json.example` (the template with placeholders) is tracked in git.
+
+3. **Run the EAS build**:
+
+   ```bash
+   eas build --platform android --profile preview   # APK
+   eas build --platform android --profile production  # AAB
+   ```
+
 ### **Need help with native features?**
 
 - Check [Expo's documentation](https://docs.expo.dev/) for native APIs
