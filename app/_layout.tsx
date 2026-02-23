@@ -89,9 +89,8 @@ export default function RootLayout() {
   useEffect(() => {
     // Initialize Google Sign-In
     GoogleSignin.configure({
-      scopes: ['https://www.googleapis.com/auth/drive.appdata'], // Use the correct scope
+      scopes: ['https://www.googleapis.com/auth/drive.appdata'],
       webClientId: WEB_CLIENT_ID,
-      offlineAccess: true, // Required for refreshing tokens
     });
     SplashScreen.hideAsync();
   }, []);
