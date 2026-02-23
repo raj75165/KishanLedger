@@ -3,7 +3,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { AppDataProvider } from "@/contexts/AppDataContext";
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
@@ -15,21 +15,15 @@ const queryClient = new QueryClient();
 const WEB_CLIENT_ID = '594087320964-7pdk3q04ii7h5mo2855f7a1vunns900h.apps.googleusercontent.com';
 
 function RootLayoutNav() {
-  const { isLoggedIn, isLoading } = useAuth();
   const segments = useSegments();
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoading) return;
-
     const inAuthGroup = (segments[0] as string) === 'login';
-
-    if (!isLoggedIn && !inAuthGroup) {
-      router.replace('/login' as any);
-    } else if (isLoggedIn && inAuthGroup) {
+    if (inAuthGroup) {
       router.replace('/(tabs)' as any);
     }
-  }, [isLoggedIn, isLoading, segments, router]);
+  }, [segments, router]);
 
   return (
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
