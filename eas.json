@@ -1,8 +1,17 @@
 {
   "cli": {
-    "version": ">= 16.0.0"
+    "version": ">= 16.0.0",
+    "requireCommit": false
   },
   "build": {
+    "local": {
+      "android": {
+        "buildType": "apk"
+      },
+      "env": {
+        "EXPO_NO_DOTENV": "1"
+      }
+    },
     "preview": {
       "android": {
         "buildType": "apk"
