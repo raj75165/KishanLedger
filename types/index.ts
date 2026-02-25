@@ -66,4 +66,5 @@ export interface User {
   name: string;
   businessName: string;
   isLoggedIn: boolean;
+  pin?: string;
 }
