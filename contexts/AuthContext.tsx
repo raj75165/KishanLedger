@@ -26,7 +26,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     }
   }, [authQuery.data]);
 
-  const loginMutation = useMutation({
+  const saveMutation = useMutation({
     mutationFn: async (userData: User) => {
       await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(userData));
       return userData;
@@ -39,24 +39,30 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+      // Keep user record but mark as logged out so PIN is required on next open
+      if (user) {
+        const updated = { ...user, isLoggedIn: false };
+        await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updated));
+      }
     },
     onSuccess: () => {
-      setUser(null);
+      setUser((prev) => prev ? { ...prev, isLoggedIn: false } : null);
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
   });
 
-  const signInWithGoogle = (googleUser: any) => {
-    // Check if a user profile already exists. If so, use it. Otherwise, create a new one.
-    const existingUser = authQuery.data;
-    const userData: User = {
-      phone: existingUser?.phone || googleUser.user.email, // Prefer existing phone/email
-      name: existingUser?.name || googleUser.user.name,
-      businessName: existingUser?.businessName || '',
-      isLoggedIn: true,
-    };
-    loginMutation.mutate(userData);
+  /** Register a brand-new user (first launch). */
+  const register = (name: string, phone: string, pin: string, businessName = '') => {
+    const userData: User = { phone, name, businessName, isLoggedIn: true, pin };
+    saveMutation.mutate(userData);
+  };
+
+  /** Verify PIN and log in an existing user. Returns true on success. */
+  const login = (pin: string): boolean => {
+    const stored: User | null = authQuery.data;
+    if (!stored || stored.pin !== pin) return false;
+    saveMutation.mutate({ ...stored, isLoggedIn: true });
+    return true;
   };
 
   const logout = () => {
@@ -66,7 +72,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
   const updateProfile = (updates: Partial<User>) => {
     if (user) {
       const updated = { ...user, ...updates };
-      loginMutation.mutate(updated);
+      saveMutation.mutate(updated);
     }
   };
 
@@ -74,7 +80,10 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     user,
     isLoading: isLoading || authQuery.isLoading,
     isLoggedIn: !!user?.isLoggedIn,
-    signInWithGoogle,
+    /** True when a user record exists in storage (i.e. user has registered before). */
+    isRegistered: !!(authQuery.data as User | null)?.phone,
+    register,
+    login,
     logout,
     updateProfile,
   };
