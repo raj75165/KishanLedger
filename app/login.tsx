@@ -22,13 +22,13 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await GoogleSignin.hasPlayServices();
-      const googleUser = await GoogleSignin.signIn();
-      if (googleUser) {
-        signInWithGoogle(googleUser);
+      const result = await GoogleSignin.signIn();
+      if (result.type === 'success' && result.data) {
+        signInWithGoogle(result);
         router.replace('/(tabs)' as any);
       }
-    } catch (error) {
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
+    } catch (error: any) {
+      if (error?.code !== statusCodes.SIGN_IN_CANCELLED) {
         Alert.alert('Sign-In Error', 'An unexpected error occurred. Please try again.');
       }
     } finally {
