@@ -51,8 +51,8 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     // Check if a user profile already exists. If so, use it. Otherwise, create a new one.
     const existingUser = authQuery.data;
     const userData: User = {
-      phone: existingUser?.phone || googleUser.user.email, // Prefer existing phone/email
-      name: existingUser?.name || googleUser.user.name,
+      phone: existingUser?.phone || googleUser.data.user.email, // Prefer existing phone/email
+      name: existingUser?.name || googleUser.data.user.name,
       businessName: existingUser?.businessName || '',
       isLoggedIn: true,
     };
