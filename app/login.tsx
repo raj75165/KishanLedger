@@ -11,7 +11,7 @@ import { useRouter } from 'expo-router';
 import { Tractor } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAuth } from '@/contexts/AuthContext';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -22,15 +22,13 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await GoogleSignin.hasPlayServices();
-      const googleUser = await GoogleSignin.signIn();
-      if (googleUser) {
-        signInWithGoogle(googleUser);
+      const response = await GoogleSignin.signIn();
+      if (response.type === 'success') {
+        signInWithGoogle(response);
         router.replace('/(tabs)' as any);
       }
-    } catch (error) {
-      if (error.code !== statusCodes.SIGN_IN_CANCELLED) {
-        Alert.alert('Sign-In Error', 'An unexpected error occurred. Please try again.');
-      }
+    } catch (error: any) {
+      Alert.alert('Sign-In Error', 'An unexpected error occurred. Please try again.');
     } finally {
       setIsLoading(false);
     }
