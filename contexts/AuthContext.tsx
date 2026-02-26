@@ -39,24 +39,37 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
 
   const logoutMutation = useMutation({
     mutationFn: async () => {
-      await AsyncStorage.removeItem(AUTH_STORAGE_KEY);
+      if (user) {
+        const updatedUser = { ...user, isLoggedIn: false };
+        await AsyncStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify(updatedUser));
+        return updatedUser;
+      }
     },
-    onSuccess: () => {
-      setUser(null);
+    onSuccess: (data) => {
+      setUser(data || null);
       queryClient.invalidateQueries({ queryKey: ['auth'] });
     },
   });
 
-  const signInWithGoogle = (googleUser: any) => {
-    // Check if a user profile already exists. If so, use it. Otherwise, create a new one.
-    const existingUser = authQuery.data;
+  const createUser = (name: string, phone: string, pin: string, businessName?: string) => {
     const userData: User = {
-      phone: existingUser?.phone || googleUser.user.email, // Prefer existing phone/email
-      name: existingUser?.name || googleUser.user.name,
-      businessName: existingUser?.businessName || '',
+      phone,
+      name,
+      businessName,
+      pin,
       isLoggedIn: true,
     };
     loginMutation.mutate(userData);
+  };
+
+  const login = (phone: string, pin: string) => {
+    if (user && user.phone === phone && user.pin === pin) {
+      const updatedUser = { ...user, isLoggedIn: true };
+      loginMutation.mutate(updatedUser);
+      return true;
+    } else {
+      return false;
+    }
   };
 
   const logout = () => {
@@ -74,7 +87,8 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     user,
     isLoading: isLoading || authQuery.isLoading,
     isLoggedIn: !!user?.isLoggedIn,
-    signInWithGoogle,
+    createUser,
+    login,
     logout,
     updateProfile,
   };

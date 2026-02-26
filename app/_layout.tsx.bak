@@ -25,8 +25,6 @@ function RootLayoutNav() {
     if (isLoggedIn && !inApp) {
       router.replace('/(tabs)' as any);
     } else if (!isLoggedIn) {
-      // Always default to the login screen if not logged in.
-      // The login screen will have a link to the register screen.
       router.replace('/login' as any);
     }
 
@@ -52,49 +50,49 @@ function RootLayoutNav() {
           gestureEnabled: false,
         }}
       />
-      <Stack.Screen 
-        name="add-farmer" 
-        options={{ 
+      <Stack.Screen
+        name="add-farmer"
+        options={{
           presentation: 'modal',
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="add-work" 
-        options={{ 
+      <Stack.Screen
+        name="add-work"
+        options={{
           presentation: 'modal',
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="profile" 
-        options={{ 
+      <Stack.Screen
+        name="profile"
+        options={{
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="select-farmer-invoice" 
-        options={{ 
+      <Stack.Screen
+        name="select-farmer-invoice"
+        options={{
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="work-detail/[id]" 
-        options={{ 
+      <Stack.Screen
+        name="work-detail/[id]"
+        options={{
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="generate-invoice/[farmerId]" 
-        options={{ 
+      <Stack.Screen
+        name="generate-invoice/[farmerId]"
+        options={{
           headerShown: false,
-        }} 
+        }}
       />
-      <Stack.Screen 
-        name="invoice-detail/[id]" 
-        options={{ 
+      <Stack.Screen
+        name="invoice-detail/[id]"
+        options={{
           headerShown: false,
-        }} 
+        }}
       />
     </Stack>
   );

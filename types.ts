@@ -6,6 +6,14 @@ export type Farmer = {
   createdAt: string;
 };
 
+export type User = {
+  phone: string;
+  name: string;
+  businessName?: string;
+  isLoggedIn: boolean;
+  pin: string;
+};
+
 export type Implement = {
   id: string;
   name: string;
