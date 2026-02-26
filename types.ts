@@ -6,12 +6,16 @@ export type Farmer = {
   createdAt: string;
 };
 
+// This type will hold all user and farm information
 export type User = {
+  email: string;
+  name: string; // fullName from registration
   phone: string;
-  name: string;
-  businessName?: string;
+  businessName?: string; // farmName from registration
+  farmSize?: string;
+  location?: string;
   isLoggedIn: boolean;
-  pin: string;
+  password: string; // In a real app, this should be a hash
 };
 
 export type Implement = {

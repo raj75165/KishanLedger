@@ -51,24 +51,22 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     },
   });
 
-  const createUser = (name: string, phone: string, pin: string, businessName?: string) => {
-    const userData: User = {
-      phone,
-      name,
-      businessName,
-      pin,
+  const register = (userData: Omit<User, 'isLoggedIn'>) => {
+    const newUser: User = {
+      ...userData,
       isLoggedIn: true,
     };
-    loginMutation.mutate(userData);
+    loginMutation.mutate(newUser);
+    return { success: true };
   };
 
-  const login = (phone: string, pin: string) => {
-    if (user && user.phone === phone && user.pin === pin) {
+  const login = (email: string, password: string) => {
+    if (user && user.email === email && user.password === password) {
       const updatedUser = { ...user, isLoggedIn: true };
       loginMutation.mutate(updatedUser);
-      return true;
+      return { success: true };
     } else {
-      return false;
+      return { success: false, error: 'Invalid email or password' };
     }
   };
 
@@ -87,7 +85,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     user,
     isLoading: isLoading || authQuery.isLoading,
     isLoggedIn: !!user?.isLoggedIn,
-    createUser,
+    register,
     login,
     logout,
     updateProfile,
