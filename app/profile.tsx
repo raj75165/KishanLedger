@@ -64,7 +64,7 @@ export default function ProfileScreen() {
           <View style={styles.avatar}>
             <User size={48} color={Colors.white} />
           </View>
-          <Text style={styles.phoneNumber}>+91 {user?.phone}</Text>
+          <Text style={styles.phoneNumber}>{user?.email}</Text>
         </View>
 
         <View style={styles.card}>
@@ -103,8 +103,8 @@ export default function ProfileScreen() {
           <View style={styles.divider} />
 
           <View style={styles.field}>
-            <Text style={styles.label}>Phone</Text>
-            <Text style={styles.value}>+91 {user?.phone}</Text>
+            <Text style={styles.label}>Email</Text>
+            <Text style={styles.value}>{user?.email}</Text>
           </View>
         </View>
 

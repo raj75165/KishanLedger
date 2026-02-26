@@ -114,7 +114,7 @@ export default function BackupRestoreScreen() {
             <>
               <ShieldCheck size={40} color={Colors.success} />
               <Text style={styles.statusText}>Signed in as:</Text>
-              <Text style={styles.emailText}>{userInfo.phone}</Text> // Now uses the main user object
+              <Text style={styles.emailText}>{userInfo.email}</Text>
             </>
           ) : (
             <>
