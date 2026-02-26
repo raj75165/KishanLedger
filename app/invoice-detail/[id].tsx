@@ -104,7 +104,7 @@ Generated on: ${formatDate(invoice.generatedAt)}
             <Text style={styles.partyLabel}>From</Text>
             <Text style={styles.partyName}>{user?.businessName || 'Farm Services'}</Text>
             <Text style={styles.partyDetail}>{user?.name}</Text>
-            <Text style={styles.partyDetail}>+91 {user?.phone}</Text>
+            <Text style={styles.partyDetail}>{user?.email}</Text>
           </View>
           <View style={styles.partySeparator} />
           <View style={styles.partySection}>

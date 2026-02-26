@@ -7,11 +7,14 @@ export type Farmer = {
 };
 
 export type User = {
-  phone: string;
   name: string;
+  email: string;
+  phone?: string;
   businessName?: string;
+  farmSize?: string;
+  location?: string;
   isLoggedIn: boolean;
-  pin: string;
+  password: string;
 };
 
 export type Implement = {

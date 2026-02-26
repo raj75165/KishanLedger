@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { User } from '@/types';
 
 const AUTH_STORAGE_KEY = '@farm_app_auth';
+const USERS_STORAGE_KEY = '@farm_app_users';
 
 export const [AuthProvider, useAuth] = createContextHook(() => {
   const queryClient = useQueryClient();
@@ -51,24 +52,60 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     },
   });
 
-  const createUser = (name: string, phone: string, pin: string, businessName?: string) => {
-    const userData: User = {
-      phone,
-      name,
-      businessName,
-      pin,
-      isLoggedIn: true,
-    };
-    loginMutation.mutate(userData);
+  const register = async (userData: {
+    fullName: string;
+    email: string;
+    phone?: string;
+    farmName?: string;
+    farmSize?: string;
+    location?: string;
+    password: string;
+  }): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const stored = await AsyncStorage.getItem(USERS_STORAGE_KEY);
+      const users: User[] = stored ? JSON.parse(stored) : [];
+      const exists = users.some((u) => u.email.toLowerCase() === userData.email.toLowerCase());
+      if (exists) {
+        return { success: false, error: 'An account with this email already exists' };
+      }
+      const newUser: User = {
+        name: userData.fullName,
+        email: userData.email.toLowerCase(),
+        phone: userData.phone,
+        businessName: userData.farmName || 'My Farm',
+        farmSize: userData.farmSize,
+        location: userData.location,
+        password: userData.password,
+        isLoggedIn: true,
+      };
+      users.push(newUser);
+      await AsyncStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+      loginMutation.mutate(newUser);
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Registration failed. Please try again.' };
+    }
   };
 
-  const login = (phone: string, pin: string) => {
-    if (user && user.phone === phone && user.pin === pin) {
-      const updatedUser = { ...user, isLoggedIn: true };
-      loginMutation.mutate(updatedUser);
-      return true;
-    } else {
-      return false;
+  const login = async (
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    try {
+      const stored = await AsyncStorage.getItem(USERS_STORAGE_KEY);
+      const users: User[] = stored ? JSON.parse(stored) : [];
+      const found = users.find((u) => u.email.toLowerCase() === email.toLowerCase());
+      if (!found) {
+        return { success: false, error: 'No account found with this email address' };
+      }
+      if (found.password !== password) {
+        return { success: false, error: 'Incorrect password. Please try again.' };
+      }
+      const loggedInUser = { ...found, isLoggedIn: true };
+      loginMutation.mutate(loggedInUser);
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Login failed. Please try again.' };
     }
   };
 
@@ -87,7 +124,7 @@ export const [AuthProvider, useAuth] = createContextHook(() => {
     user,
     isLoading: isLoading || authQuery.isLoading,
     isLoggedIn: !!user?.isLoggedIn,
-    createUser,
+    register,
     login,
     logout,
     updateProfile,
