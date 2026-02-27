@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   View,
   Text,
@@ -36,7 +36,11 @@ export default function DashboardScreen() {
     setRefreshing(false);
   };
 
-  const recentWork = workEntries.slice(-5).reverse();
+  const recentWork = useMemo(() => {
+    return [...workEntries]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 5);
+  }, [workEntries]);
 
   const formatCurrency = (amount: number) => {
     return '₹' + amount.toLocaleString('en-IN');

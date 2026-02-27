@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { useRouter, Stack } from 'expo-router';
+import { useRouter, Stack, useLocalSearchParams } from 'expo-router';
 import { User, Phone, MapPin, Landmark, Check } from 'lucide-react-native';
 import { Colors } from '@/constants/colors';
 import { useAppData } from '@/contexts/AppDataContext';
@@ -19,14 +19,21 @@ import * as Haptics from 'expo-haptics';
 
 export default function AddFarmerScreen() {
   const router = useRouter();
-  const { addFarmer } = useAppData();
+  const { addFarmer, updateFarmer, farmers } = useAppData();
+  const { farmerId } = useLocalSearchParams<{ farmerId?: string }>();
 
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [village, setVillage] = useState('');
-  const [address, setAddress] = useState('');
-  const [landArea, setLandArea] = useState('');
-  const [landUnit, setLandUnit] = useState<'acre' | 'bigha' | 'hectare'>('acre');
+  const editingFarmer = useMemo(
+    () => (farmerId ? farmers.find((f) => f.id === farmerId) : undefined),
+    [farmers, farmerId]
+  );
+  const isEditing = !!editingFarmer;
+
+  const [name, setName] = useState(editingFarmer?.name || '');
+  const [phone, setPhone] = useState(editingFarmer?.phone || '');
+  const [village, setVillage] = useState(editingFarmer?.village || '');
+  const [address, setAddress] = useState(editingFarmer?.address || '');
+  const [landArea, setLandArea] = useState(editingFarmer?.landArea?.toString() || '');
+  const [landUnit, setLandUnit] = useState<'acre' | 'bigha' | 'hectare'>(editingFarmer?.landUnit || 'acre');
 
   const handleSubmit = () => {
     if (!name.trim()) {
@@ -42,14 +49,25 @@ export default function AddFarmerScreen() {
       return;
     }
 
-    addFarmer({
-      name: name.trim(),
-      phone: phone.trim(),
-      village: village.trim(),
-      address: address.trim(),
-      landArea: parseFloat(landArea) || 0,
-      landUnit,
-    });
+    if (isEditing && editingFarmer) {
+      updateFarmer(editingFarmer.id, {
+        name: name.trim(),
+        phone: phone.trim(),
+        village: village.trim(),
+        address: address.trim(),
+        landArea: parseFloat(landArea) || 0,
+        landUnit,
+      });
+    } else {
+      addFarmer({
+        name: name.trim(),
+        phone: phone.trim(),
+        village: village.trim(),
+        address: address.trim(),
+        landArea: parseFloat(landArea) || 0,
+        landUnit,
+      });
+    }
 
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     router.back();
@@ -59,7 +77,7 @@ export default function AddFarmerScreen() {
     <>
       <Stack.Screen
         options={{
-          title: 'Add Farmer',
+          title: isEditing ? 'Edit Farmer' : 'Add Farmer',
           headerStyle: { backgroundColor: Colors.primary },
           headerTintColor: Colors.white,
         }}
@@ -173,7 +191,7 @@ export default function AddFarmerScreen() {
 
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
             <Check size={22} color={Colors.white} />
-            <Text style={styles.submitText}>Add Farmer</Text>
+            <Text style={styles.submitText}>{isEditing ? 'Save Changes' : 'Add Farmer'}</Text>
           </TouchableOpacity>
         </ScrollView>
       </KeyboardAvoidingView>
