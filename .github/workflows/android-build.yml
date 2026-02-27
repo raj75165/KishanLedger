@@ -1,0 +1,49 @@
+name: Android Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-android:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Set PowerShell execution policy
+        run: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+        shell: pwsh
+
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm install
+        shell: pwsh
+
+      - name: Expo prebuild (Android)
+        run: npx expo prebuild -p android --no-install
+        shell: pwsh
+
+      - name: Build release APK
+        working-directory: android
+        run: .\gradlew.bat assembleRelease
+        shell: pwsh
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-${{ github.run_number }}
+          path: android/app/build/outputs/apk/release/app-release*.apk
