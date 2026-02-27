@@ -101,6 +101,42 @@ bun run start -- --ios
 bun run start -- --android
 ```
 
+## How to Build an APK Without an Expo Account
+
+You can build a release APK directly—**no Expo account or EAS login required**—using one of the two methods below.
+
+### Method 1: GitHub Actions (Recommended)
+
+Every push to the `main` branch automatically triggers the **Build Android APK** workflow.  
+You can also trigger it manually:
+
+1. Go to the **Actions** tab in your GitHub repository.
+2. Select **Build Android APK** from the left sidebar.
+3. Click **Run workflow → Run workflow**.
+4. Once the job completes (≈ 10–15 min), click the workflow run to open it.
+5. Scroll down to the **Artifacts** section and click **KishanLedger-release.apk** to download the APK.
+
+### Method 2: Build locally (requires Android Studio / SDK)
+
+```bash
+# 1. Install dependencies
+bun install
+
+# 2. Generate the native Android project
+bunx expo prebuild --platform android --no-install
+
+# 3. Build the APK with Gradle
+cd android
+./gradlew assembleRelease
+
+# 4. The APK is at:
+#    android/app/build/outputs/apk/release/app-release.apk
+```
+
+No Expo account is needed for either method.
+
+---
+
 ## How can I deploy this project?
 
 ### **Publish to App Store (iOS)**
